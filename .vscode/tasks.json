@@ -1,0 +1,19 @@
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile JavaFX",
+      "type": "shell",
+      "command": "\"C:/Program Files/zulu17.58.21-ca-fx-jdk17.0.15-win_x64/bin/javac\"",
+      "args": [
+        "--module-path",
+        "\"C:/Program Files/zulu17.58.21-ca-fx-jdk17.0.15-win_x64/lib\"",
+        "--add-modules",
+        "javafx.controls",
+        "EventDashboardApp.java"
+      ],
+      "group": "build"
+    }
+  ]
+}
