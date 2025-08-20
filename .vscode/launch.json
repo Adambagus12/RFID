@@ -3,10 +3,10 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch JavaFX App",
+      "name": "Home",
       "request": "launch",
-      "mainClass": "EventDashboardApp",
-      "vmArgs": ""
+      "mainClass": "src.Home",
+      "projectName": "event_e9f38fc1"
     }
   ]
 }
