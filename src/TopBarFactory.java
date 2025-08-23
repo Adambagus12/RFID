@@ -46,6 +46,10 @@ public class TopBarFactory {
         tagCheckBtn.setOnAction(e -> { if (navigator != null) navigator.accept("Tag Check"); });
         counterTimeBtn.setOnAction(e -> { if (navigator != null) navigator.accept("Timing"); });
 
+        // 🆕 Kunci tombol TopBar bila belum ada event
+        tagCheckBtn.disableProperty().bind(Navigator.eventActiveProperty().not());
+        counterTimeBtn.disableProperty().bind(Navigator.eventActiveProperty().not());
+
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -57,13 +61,13 @@ public class TopBarFactory {
 
         topBar.getChildren().addAll(tagCheckBtn, counterTimeBtn, spacer, rightClock);
 
-        startClock(); 
+        startClock();
         return topBar;
     }
 
     private static void startClock() {
         if (clockTimeline != null && clockTimeline.getStatus() == Timeline.Status.RUNNING) {
-            return; 
+            return;
         }
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss");
         clockTimeline = new Timeline(

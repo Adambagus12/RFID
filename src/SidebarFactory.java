@@ -1,6 +1,7 @@
 package src;
 
 import java.util.function.Consumer;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -19,11 +20,11 @@ public class SidebarFactory {
 
     public static VBox createSidebar(String activePage, Consumer<String> onNavigate) {
         VBox sidebar = new VBox();
-        sidebar.setStyle("-fx-background-color: #151233;");   
+        sidebar.setStyle("-fx-background-color: #151233;");
         sidebar.setPrefWidth(80);
         sidebar.setAlignment(Pos.TOP_CENTER);
         sidebar.setSpacing(20);
-        sidebar.setPadding(new Insets(0, 0, 0, 0));   
+        sidebar.setPadding(new Insets(0, 0, 0, 0));
 
         sidebar.setMinHeight(0);
         sidebar.setMaxHeight(Double.MAX_VALUE);
@@ -42,12 +43,23 @@ public class SidebarFactory {
         logoBox.setAlignment(Pos.CENTER);
         sidebar.getChildren().add(logoBox);
 
-        sidebar.getChildren().addAll(
-            createSidebarButton("Home", "file:assets/home.png", "Home".equals(activePage), onNavigate),
-            createSidebarButton("Participant", "file:assets/running.png", "Participant".equals(activePage), onNavigate),
-            createSidebarButton("Timing", "file:assets/stopwatch.png", "Timing".equals(activePage), onNavigate),
-            createSidebarButton("Setting", "file:assets/settings.png", "Setting".equals(activePage), onNavigate)
-        );
+        // tombol-tombol
+        VBox btnHome       = createSidebarButton("Home", "file:assets/home.png", "Home".equals(activePage), onNavigate);
+        VBox btnParticipant= createSidebarButton("Participant", "file:assets/running.png", "Participant".equals(activePage), onNavigate);
+        VBox btnTiming     = createSidebarButton("Timing", "file:assets/stopwatch.png", "Timing".equals(activePage), onNavigate);
+        VBox btnSetting    = createSidebarButton("Setting", "file:assets/settings.png", "Setting".equals(activePage), onNavigate);
+
+        // 🆕 Kunci semua menu kecuali Home saat belum ada event
+        btnParticipant.disableProperty().bind(Navigator.eventActiveProperty().not());
+        btnTiming.disableProperty().bind(Navigator.eventActiveProperty().not());
+        btnSetting.disableProperty().bind(Navigator.eventActiveProperty().not());
+
+        // efek visual saat terkunci
+        btnParticipant.opacityProperty().bind(Bindings.when(Navigator.eventActiveProperty()).then(1.0).otherwise(0.5));
+        btnTiming.opacityProperty().bind(Bindings.when(Navigator.eventActiveProperty()).then(1.0).otherwise(0.5));
+        btnSetting.opacityProperty().bind(Bindings.when(Navigator.eventActiveProperty()).then(1.0).otherwise(0.5));
+
+        sidebar.getChildren().addAll(btnHome, btnParticipant, btnTiming, btnSetting);
 
         Region filler = new Region();
         VBox.setVgrow(filler, Priority.ALWAYS);
@@ -80,16 +92,18 @@ public class SidebarFactory {
         Tooltip.install(box, new Tooltip(title));
         box.getChildren().addAll(icon, label);
 
-        box.setOnMouseEntered(e -> { 
-            box.setStyle("-fx-background-color: #2f2a52;");
-            box.setCursor(javafx.scene.Cursor.HAND);
+        box.setOnMouseEntered(e -> {
+            if (!box.isDisabled()) {
+                box.setStyle("-fx-background-color: #2f2a52;");
+                box.setCursor(javafx.scene.Cursor.HAND);
+            }
         });
         box.setOnMouseExited(e -> box.setStyle(selected
             ? "-fx-background-color: #4B437F;"
             : "-fx-background-color: transparent;"));
 
         box.setOnMouseClicked(e -> {
-            if (onNavigate != null) {
+            if (!box.isDisabled() && onNavigate != null) {
                 onNavigate.accept(title);
             }
         });

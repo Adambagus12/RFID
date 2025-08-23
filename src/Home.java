@@ -1,5 +1,7 @@
 package src;
+
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,7 +23,7 @@ public class Home extends Application {
         HBox rootRow = new HBox();
         rootRow.setFillHeight(true);
         VBox sidebarHost = new VBox();
-        sidebarHost.setPrefWidth(80); 
+        sidebarHost.setPrefWidth(80);
         HBox.setHgrow(sidebarHost, Priority.NEVER);
 
         mainPane = new BorderPane();
@@ -37,7 +39,6 @@ public class Home extends Application {
         sidebarHost.getChildren().setAll(
             SidebarFactory.createSidebar("Home", Navigator::navigate)
         );
-        mainPane.setCenter(createMainContent());
 
         rootRow.getChildren().addAll(sidebarHost, mainPane);
 
@@ -45,13 +46,34 @@ public class Home extends Application {
         stage.setTitle("Event");
         stage.setScene(scene);
         stage.show();
-    }
 
+        // 🔹 Kalau mau langsung tampil CloseEvent, cukup pakai ini
+        Navigator.navigate("CloseEvent");
+
+        // 🔹 Kalau mau pakai AddEvent popup di awal, uncomment ini
+        /*
+        AddEvent dialog = new AddEvent();
+        dialog.showAndWait().ifPresent(eventName -> {
+            Navigator.setActiveEvent(eventName);
+            mainPane.setCenter(createMainContent()); // tampilkan Home setelah event aktif
+        });
+        */
+    }
 
     private VBox createMainContent() {
         VBox content = new VBox(10);
         content.setPadding(new Insets(10));
         content.setStyle("-fx-background-color: #f4f4f4;");
+
+        // 🔹 tombol Close Event di kanan atas
+        Button closeEventBtn = new Button("✖ Close Event");
+        closeEventBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+        closeEventBtn.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        closeEventBtn.setOnAction(e -> Navigator.navigate("CloseEvent"));
+
+        HBox closeEventRow = new HBox(closeEventBtn);
+        closeEventRow.setAlignment(Pos.TOP_RIGHT);
+        closeEventRow.setPadding(new Insets(0, 10, 5, 0));
 
         VBox topSection = new VBox(10);
         topSection.getChildren().addAll(createHeaderText(), createStatsRow());
@@ -61,17 +83,24 @@ public class Home extends Application {
 
         VBox bottomSection = createFindReadersSection();
 
-        content.getChildren().addAll(topSection, spacer, bottomSection);
+        content.getChildren().addAll(closeEventRow, topSection, spacer, bottomSection);
         return content;
     }
 
     private VBox createHeaderText() {
         VBox box = new VBox(4);
-        Text title = new Text("Welcome");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 24));
 
-        Text subtitle = new Text("RUN");
+        Text title = new Text("Welcome");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        Text subtitle = new Text();
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+
+        subtitle.textProperty().bind(
+            Bindings.when(Navigator.eventActiveProperty())
+                    .then(Navigator.activeEventNameProperty())
+                    .otherwise("")
+        );
 
         box.getChildren().addAll(title, subtitle);
         return box;

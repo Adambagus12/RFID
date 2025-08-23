@@ -3,10 +3,10 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Home",
+      "name": "Launch Home",
       "request": "launch",
-      "mainClass": "src.Home",
-      "projectName": "event_e9f38fc1"
+      "mainClass": "src.Home",  
+      "projectName": "EVENT"
     }
   ]
 }
