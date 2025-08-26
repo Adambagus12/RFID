@@ -46,7 +46,6 @@ public class TopBarFactory {
         tagCheckBtn.setOnAction(e -> { if (navigator != null) navigator.accept("Tag Check"); });
         counterTimeBtn.setOnAction(e -> { if (navigator != null) navigator.accept("Timing"); });
 
-        // 🆕 Kunci tombol TopBar bila belum ada event
         tagCheckBtn.disableProperty().bind(Navigator.eventActiveProperty().not());
         counterTimeBtn.disableProperty().bind(Navigator.eventActiveProperty().not());
 

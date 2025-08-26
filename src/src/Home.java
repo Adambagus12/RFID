@@ -1,79 +1,18 @@
 package src;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
-import javafx.stage.Stage;
 
-public class Home extends Application {
+public class Home {
 
-    private BorderPane mainPane;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-        HBox rootRow = new HBox();
-        rootRow.setFillHeight(true);
-        VBox sidebarHost = new VBox();
-        sidebarHost.setPrefWidth(80);
-        HBox.setHgrow(sidebarHost, Priority.NEVER);
-
-        mainPane = new BorderPane();
-        mainPane.setPadding(new Insets(0, 0, 0, 0));
-        HBox.setHgrow(mainPane, Priority.ALWAYS);
-
-        Navigator.init(mainPane, sidebarHost);
-        Navigator.setHomeSupplier(this::createMainContent);
-
-        mainPane.setTop(TopBarFactory.createTopBar());
-        TopBarFactory.setNavigator(Navigator::navigate);
-
-        sidebarHost.getChildren().setAll(
-            SidebarFactory.createSidebar("Home", Navigator::navigate)
-        );
-
-        rootRow.getChildren().addAll(sidebarHost, mainPane);
-
-        Scene scene = new Scene(rootRow, 1366, 768);
-        stage.setTitle("Event");
-        stage.setScene(scene);
-        stage.show();
-
-        // 🔹 Kalau mau langsung tampil CloseEvent, cukup pakai ini
-        Navigator.navigate("CloseEvent");
-
-        // 🔹 Kalau mau pakai AddEvent popup di awal, uncomment ini
-        /*
-        AddEvent dialog = new AddEvent();
-        dialog.showAndWait().ifPresent(eventName -> {
-            Navigator.setActiveEvent(eventName);
-            mainPane.setCenter(createMainContent()); // tampilkan Home setelah event aktif
-        });
-        */
-    }
-
-    private VBox createMainContent() {
+    public static VBox createMainContent() {
         VBox content = new VBox(10);
         content.setPadding(new Insets(10));
         content.setStyle("-fx-background-color: #f4f4f4;");
-
-        // 🔹 tombol Close Event di kanan atas
-        Button closeEventBtn = new Button("✖ Close Event");
-        closeEventBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-        closeEventBtn.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        closeEventBtn.setOnAction(e -> Navigator.navigate("CloseEvent"));
-
-        HBox closeEventRow = new HBox(closeEventBtn);
-        closeEventRow.setAlignment(Pos.TOP_RIGHT);
-        closeEventRow.setPadding(new Insets(0, 10, 5, 0));
 
         VBox topSection = new VBox(10);
         topSection.getChildren().addAll(createHeaderText(), createStatsRow());
@@ -83,15 +22,17 @@ public class Home extends Application {
 
         VBox bottomSection = createFindReadersSection();
 
-        content.getChildren().addAll(closeEventRow, topSection, spacer, bottomSection);
+        content.getChildren().addAll(topSection, spacer, bottomSection);
         return content;
     }
 
-    private VBox createHeaderText() {
+    private static VBox createHeaderText() {
         VBox box = new VBox(4);
+        box.setAlignment(Pos.TOP_LEFT);
 
         Text title = new Text("Welcome");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        VBox.setMargin(title, new Insets(10, 0, 0, 10));
 
         Text subtitle = new Text();
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
@@ -106,7 +47,7 @@ public class Home extends Application {
         return box;
     }
 
-    private HBox createStatsRow() {
+    private static HBox createStatsRow() {
         HBox stats = new HBox(20);
         stats.setPadding(new Insets(10, 0, 10, 0));
 
@@ -120,7 +61,7 @@ public class Home extends Application {
         return stats;
     }
 
-    private VBox createStatBox(String title, String value, String backgroundColor) {
+    private static VBox createStatBox(String title, String value, String backgroundColor) {
         Label titleLabel = new Label(title);
         titleLabel.setStyle("-fx-background-color: " + backgroundColor + "; -fx-text-fill: white;");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
@@ -140,14 +81,30 @@ public class Home extends Application {
         whiteBox.setStyle("-fx-background-color: white; -fx-background-radius: 4;");
         whiteBox.setAlignment(Pos.CENTER);
         whiteBox.setPadding(new Insets(5));
+        whiteBox.setMinHeight(100);
+
+        if (title.equals("Number of Categories")) {
+            Button closeEventBtn = new Button("✖ Close Event");
+            closeEventBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            closeEventBtn.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            closeEventBtn.setOnAction(e -> Navigator.navigateTo("CloseEvent"));
+
+            StackPane stack = new StackPane(whiteBox);
+            StackPane.setAlignment(closeEventBtn, Pos.TOP_RIGHT);
+            StackPane.setMargin(closeEventBtn, new Insets(-20, 5, 0, 2)); // 
+            stack.getChildren().add(closeEventBtn);
+
+            VBox wrapper = new VBox(stack);
+            wrapper.setAlignment(Pos.CENTER);
+            return wrapper;
+        }
 
         VBox wrapper = new VBox(whiteBox);
         wrapper.setAlignment(Pos.CENTER);
-        wrapper.setMinHeight(100);
         return wrapper;
     }
 
-    private VBox createFindReadersSection() {
+    private static VBox createFindReadersSection() {
         VBox section = new VBox(10);
 
         Button findReadersBtn = new Button("Find Readers");

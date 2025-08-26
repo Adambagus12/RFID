@@ -2,6 +2,7 @@ package src;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -10,40 +11,36 @@ import javafx.scene.text.FontWeight;
 public class Setting extends BorderPane {
 
     public Setting() {
-        // TabPane utama
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        // ================= TAB: EVENT =================
         Tab tabEvent = new Tab("Event");
         tabEvent.setContent(buildEventTab());
 
-        // ================= TAB: WAVE ==================
         Tab tabWave = new Tab("Wave");
         tabWave.setContent(buildWaveTab());
 
-        // ================= TAB: CATEGORY ==============
         Tab tabCategory = new Tab("Category");
         tabCategory.setContent(buildCategoryTab());
 
-        // ================= TAB: SPLIT =================
         Tab tabSplit = new Tab("Split");
         tabSplit.setContent(buildSplitTab());
 
         tabPane.getTabs().addAll(tabEvent, tabWave, tabCategory, tabSplit);
-
-        // Taruh di CENTER supaya mengikuti ukuran window
         setCenter(tabPane);
     }
 
-    // ------------------- EVENT TAB -------------------
+    // ✅ Tambahan untuk konsistensi dengan halaman lain
+    public Parent getView() {
+        return this;
+    }
+
     private AnchorPane buildEventTab() {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(10);
         wrapper.setPadding(new Insets(10));
         wrapper.setPrefSize(600, 471);
 
-        // ===== Section: Event =====
         VBox sectionEvent = new VBox(5);
         sectionEvent.setAlignment(Pos.TOP_CENTER);
 
@@ -81,7 +78,6 @@ public class Setting extends BorderPane {
 
         sectionEvent.getChildren().addAll(lblEventTitle, row1, row2);
 
-        // ===== Section: Address =====
         VBox sectionAddress = new VBox(5);
         sectionAddress.setAlignment(Pos.TOP_CENTER);
 
@@ -116,7 +112,6 @@ public class Setting extends BorderPane {
 
         sectionAddress.getChildren().addAll(lblAddressTitle, rowA1, rowA2);
 
-        // ===== Section: Race Director =====
         VBox sectionRD = new VBox(5);
         sectionRD.setAlignment(Pos.TOP_CENTER);
 
@@ -167,22 +162,18 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ------------------- WAVE TAB -------------------
     private AnchorPane buildWaveTab() {
         return buildTableTab("#", "Name");
     }
 
-    // ------------------- CATEGORY TAB -------------------
     private AnchorPane buildCategoryTab() {
         return buildTableTab("#", "Name", "Wave");
     }
 
-    // ------------------- SPLIT TAB -------------------
     private AnchorPane buildSplitTab() {
         return buildTableTab("#", "Name", "Type", "Distance", "Gap", "Category");
     }
 
-    // ------------------- UTILITY: TABLE TAB -------------------
     private AnchorPane buildTableTab(String... columns) {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(5);
@@ -225,19 +216,17 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ------------------- UTILITY: CREATE VBOX WITH LABEL + FIELD -------------------
     private VBox createVBoxWithLabelAndField(String labelText) {
         VBox vbox = new VBox(3);
         Label label = new Label(labelText);
         label.setFont(Font.font(11));
 
         TextField textField = new TextField();
-        textField.setMaxWidth(Double.MAX_VALUE); // responsif
-
+        textField.setMaxWidth(Double.MAX_VALUE);
         HBox hbox = new HBox(textField);
         HBox.setHgrow(textField, Priority.ALWAYS);
-        vbox.getChildren().addAll(label, hbox);
 
+        vbox.getChildren().addAll(label, hbox);
         return vbox;
     }
 }
