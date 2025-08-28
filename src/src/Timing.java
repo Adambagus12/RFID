@@ -8,27 +8,27 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
 public class Timing {
 
     public Parent getView() {
         BorderPane root = new BorderPane();
 
-        VBox center = new VBox();
-        center.setSpacing(10); 
+        VBox center = new VBox(10);
         center.setPadding(new Insets(10));
         root.setCenter(center);
         VBox.setVgrow(center, Priority.ALWAYS);
 
+        // ================= TOP ROW =================
         HBox topRow = new HBox(10);
-        
         HBox.setHgrow(topRow, Priority.ALWAYS);
-        VBox.setVgrow(topRow, Priority.NEVER);
 
+        // ----------- BIB Section -----------
         VBox bibBox = new VBox(10);
         bibBox.setPadding(new Insets(16));
         bibBox.setFillWidth(true);
-    
         HBox.setHgrow(bibBox, Priority.SOMETIMES);
 
         Label bibTitle = new Label("Bib #");
@@ -58,12 +58,10 @@ public class Timing {
         valTagRead.setFont(Font.font("Arial", 18));
         statsValues.getChildren().addAll(valTagsPerSec, valTagRead);
 
-        HBox.setHgrow(statsLabels, Priority.ALWAYS);
-        HBox.setHgrow(statsValues, Priority.ALWAYS);
-
         statsRow.getChildren().addAll(statsLabels, statsValues);
         bibBox.getChildren().addAll(bibTitle, bibField, statsRow);
 
+        // ----------- Start / Upload Section -----------
         VBox startUploadBox = new VBox(10);
         startUploadBox.setFillWidth(true);
         startUploadBox.setAlignment(Pos.TOP_CENTER);
@@ -73,15 +71,23 @@ public class Timing {
         buttonsRow.setAlignment(Pos.CENTER);
         buttonsRow.setPadding(new Insets(0, 10, 0, 10));
 
-        Button btnStart = new Button("Start");
+        // Tombol Start
+        FontIcon startIcon = new FontIcon(FontAwesomeSolid.PLAY);
+        startIcon.setIconSize(18);
+        startIcon.setIconColor(Color.WHITE);
+        Button btnStart = new Button("Start", startIcon);
         btnStart.setStyle("-fx-background-color: green; -fx-text-fill: white;");
-        btnStart.setFont(Font.font("Arial", 20));
-        btnStart.setPadding(new Insets(16, 32, 16, 32));
+        btnStart.setFont(Font.font("Arial", 18));
+        btnStart.setPadding(new Insets(10, 20, 10, 20));
 
-        Button btnUpload = new Button("Upload");
+        // Tombol Upload
+        FontIcon uploadIcon = new FontIcon(FontAwesomeSolid.UPLOAD);
+        uploadIcon.setIconSize(18);
+        uploadIcon.setIconColor(Color.WHITE);
+        Button btnUpload = new Button("Upload", uploadIcon);
         btnUpload.setStyle("-fx-background-color: green; -fx-text-fill: white;");
-        btnUpload.setFont(Font.font("Arial", 20));
-        btnUpload.setPadding(new Insets(16, 32, 16, 32));
+        btnUpload.setFont(Font.font("Arial", 18));
+        btnUpload.setPadding(new Insets(10, 20, 10, 20));
 
         buttonsRow.getChildren().addAll(btnStart, btnUpload);
 
@@ -110,6 +116,7 @@ public class Timing {
         rectCol.getChildren().addAll(r1, r2);
         startUploadBox.getChildren().addAll(buttonsRow, rectCol);
 
+        // ----------- Left Table (Devices) -----------
         TableView<Void> tvLeft = new TableView<>();
         tvLeft.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvLeft.setPlaceholder(new Label("No data"));
@@ -120,6 +127,8 @@ public class Timing {
         TableColumn<Void, String> c_l3 = new TableColumn<>("Model");
         TableColumn<Void, String> c_l4 = new TableColumn<>("Connected?");
         tvLeft.getColumns().addAll(c_l1, c_l2, c_l3, c_l4);
+
+        // ----------- Right Table (Tags) -----------
         TableView<Void> tvRight = new TableView<>();
         tvRight.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvRight.setPlaceholder(new Label("No data"));
@@ -135,6 +144,7 @@ public class Timing {
 
         topRow.getChildren().addAll(bibBox, startUploadBox, tvLeft, tvRight);
 
+        // ================= SPLIT =================
         SplitPane split = new SplitPane();
         split.setDividerPositions(0.22);
         VBox.setVgrow(split, Priority.ALWAYS);
@@ -142,10 +152,8 @@ public class Timing {
         Pane leftPane = new Pane();
         ScrollBar sb = new ScrollBar();
         sb.setOrientation(javafx.geometry.Orientation.VERTICAL);
-    
         sb.prefHeightProperty().bind(leftPane.heightProperty().subtract(2));
         sb.setVisibleAmount(90.0);
-    
         sb.layoutXProperty().bind(leftPane.widthProperty().subtract(sb.widthProperty()));
         sb.setLayoutY(0);
         leftPane.getChildren().add(sb);
@@ -158,11 +166,12 @@ public class Timing {
         HBox filtersRow = new HBox(10);
         filtersRow.setAlignment(Pos.CENTER_LEFT);
 
+        // ----------- Filter Left -----------
         HBox filtersLeft = new HBox(10);
         filtersLeft.setAlignment(Pos.CENTER_LEFT);
 
-        Label lblI = new Label("I");
-        lblI.setFont(Font.font("Arial", 22));
+        FontIcon searchIcon = new FontIcon(FontAwesomeSolid.SEARCH);
+        searchIcon.setIconSize(16);
 
         TextField tfSearch = new TextField();
         tfSearch.setPromptText("Search...");
@@ -171,15 +180,21 @@ public class Timing {
         ChoiceBox<String> cb1 = new ChoiceBox<>();
         ChoiceBox<String> cb2 = new ChoiceBox<>();
 
-        filtersLeft.getChildren().addAll(lblI, tfSearch, cb1, cb2);
+        filtersLeft.getChildren().addAll(searchIcon, tfSearch, cb1, cb2);
 
+        // ----------- Filter Right -----------
         HBox filtersRight = new HBox(10);
         filtersRight.setAlignment(Pos.CENTER_RIGHT);
 
-        Button btnRefresh = new Button("Refresh");
+        FontIcon refreshIcon = new FontIcon(FontAwesomeSolid.SYNC_ALT); // ganti ROTATE
+        refreshIcon.setIconSize(16);
+        Button btnRefresh = new Button("Refresh", refreshIcon);
         btnRefresh.setFont(Font.font("Arial", 14));
 
-        Button btnII = new Button("II");
+        FontIcon stopIcon = new FontIcon(FontAwesomeSolid.STOP);
+        stopIcon.setIconSize(14);
+        stopIcon.setIconColor(Color.WHITE);
+        Button btnII = new Button("Stop", stopIcon);
         btnII.setStyle("-fx-background-color: red; -fx-text-fill: white;");
         btnII.setFont(Font.font("Arial", 12));
 
@@ -187,9 +202,9 @@ public class Timing {
         HBox.setHgrow(spacerFR, Priority.ALWAYS);
 
         filtersRight.getChildren().addAll(spacerFR, btnRefresh, btnII);
-
         filtersRow.getChildren().addAll(filtersLeft, filtersRight);
 
+        // ----------- Main Table -----------
         TableView<Void> tvMain = new TableView<>();
         tvMain.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvMain.setPlaceholder(new Label("No data"));

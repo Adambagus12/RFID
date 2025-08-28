@@ -12,6 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
+// Ikonli (FontAwesome)
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+
 public class Participant {
 
     public static class ParticipantRecord {
@@ -59,30 +63,29 @@ public class Participant {
         Label title = new Label("Data Participant");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
+        // ==== ACTION BAR ====
         HBox actionBar = new HBox(10);
         actionBar.setAlignment(Pos.CENTER_LEFT);
 
-        Button addBtn = new Button("+ Add");
-        Button editBtn = new Button("Edit");
-        Button deleteBtn = new Button("Delete");
-        Button deleteAllBtn = new Button("Delete All");
+        Button addBtn = new Button(" Add", new FontIcon(FontAwesomeSolid.PLUS));
+        Button editBtn = new Button(" Edit", new FontIcon(FontAwesomeSolid.EDIT));
+        Button deleteBtn = new Button(" Delete", new FontIcon(FontAwesomeSolid.TRASH));
+        Button deleteAllBtn = new Button(" Delete All", new FontIcon(FontAwesomeSolid.TRASH_ALT));
         deleteAllBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 
         Region spacerAction = new Region();
         HBox.setHgrow(spacerAction, Priority.ALWAYS);
 
-        Label writeTag = new Label("Write Tag");
-        Label importBtn = new Label("Import");
-        Label downloadBtn = new Label("Download");
-
-        for (Label l : new Label[]{writeTag, importBtn, downloadBtn}) {
-            l.setStyle("-fx-border-color: #ccc; -fx-padding: 4 8;");
-        }
+        Button writeTag = new Button(" Write Tag", new FontIcon(FontAwesomeSolid.TAG));
+        Button importBtn = new Button(" Import", new FontIcon(FontAwesomeSolid.FILE_IMPORT));
+        Button downloadBtn = new Button(" Download", new FontIcon(FontAwesomeSolid.DOWNLOAD));
 
         HBox rightActions = new HBox(10, writeTag, importBtn, downloadBtn);
         rightActions.setAlignment(Pos.CENTER_RIGHT);
 
         actionBar.getChildren().addAll(addBtn, editBtn, deleteBtn, deleteAllBtn, spacerAction, rightActions);
+
+        // ==== FILTER ROW ====
         HBox filterRow = new HBox(10);
         filterRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -104,6 +107,7 @@ public class Participant {
 
         filterRow.getChildren().addAll(searchField, categoryFilter, statusFilter, spacer2, countLabel);
 
+        // ==== TABLE ====
         TableView<ParticipantRecord> table = new TableView<>();
         table.setPlaceholder(new Label("No content in table"));
         table.setPrefHeight(600);
@@ -133,6 +137,7 @@ public class Participant {
 
         table.getColumns().addAll(cNo, cBib, cName, cSex, cEmail, cPhone, cTeam, cCategory, cWave, cStatus);
 
+        // ==== DATA ====
         ObservableList<ParticipantRecord> master = FXCollections.observableArrayList();
         boolean addDummy = false; 
         if (addDummy) {
@@ -153,6 +158,7 @@ public class Participant {
         SortedList<ParticipantRecord> sorted = new SortedList<>(filtered);
         sorted.comparatorProperty().bind(table.comparatorProperty());
 
+        // ==== PAGINATION ====
         Pagination pagination = new Pagination(1, 0);
         pagination.setMaxPageIndicatorCount(7);
         final int rowsPerPage = 25;
@@ -178,6 +184,7 @@ public class Participant {
         recalcPages.onChanged(null);
         countLabel.textProperty().bind(Bindings.size(filtered).asString("Number of Participants: %d"));
 
+        // ==== BUTTON ACTIONS ====
         addBtn.setOnAction(e -> {
             int nextNo = master.size() + 1;
             master.add(new ParticipantRecord(nextNo, "BIB"+nextNo, "New Person "+nextNo, "M", "", "", "", "", "", "Unpaid"));
