@@ -3,6 +3,17 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "src.Main",
+      "projectName": "new_7b784b74",
+      "classPaths": [
+        "src",
+        "lib/*"
+      ]
+    },
+    {
+      "type": "java",
       "name": "Launch Main",
       "request": "launch",
       "mainClass": "src.Main",

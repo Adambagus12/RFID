@@ -1,7 +1,6 @@
 package src;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.*;
@@ -11,27 +10,32 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class Participant {
 
+    public Parent getView() {
+        return createMainContent();
+    }
+
+    // Data model lengkap sesuai kolom tabel
     public static class ParticipantRecord {
         private final IntegerProperty no = new SimpleIntegerProperty();
-        private final StringProperty  bib = new SimpleStringProperty();
-        private final StringProperty  name = new SimpleStringProperty();
-        private final StringProperty  sex = new SimpleStringProperty();
-        private final StringProperty  email = new SimpleStringProperty();
-        private final StringProperty  phone = new SimpleStringProperty();
-        private final StringProperty  team = new SimpleStringProperty();
-        private final StringProperty  category = new SimpleStringProperty();
-        private final StringProperty  wave = new SimpleStringProperty();
-        private final StringProperty  status = new SimpleStringProperty();
+        private final StringProperty bib = new SimpleStringProperty();
+        private final StringProperty name = new SimpleStringProperty(); // Tambahkan property name
+        private final StringProperty gender = new SimpleStringProperty();
+        private final StringProperty email = new SimpleStringProperty();
+        private final StringProperty phone = new SimpleStringProperty();
+        private final StringProperty team = new SimpleStringProperty();
+        private final StringProperty category = new SimpleStringProperty();
+        private final StringProperty wave = new SimpleStringProperty();
+        private final StringProperty status = new SimpleStringProperty();
 
-        public ParticipantRecord(int no, String bib, String name, String sex, String email, String phone,
-                                 String team, String category, String wave, String status) {
+        public ParticipantRecord(int no, String bib, String name, String gender, String email, String phone, String team, String category, String wave, String status) {
             this.no.set(no);
             this.bib.set(bib);
-            this.name.set(name);
-            this.sex.set(sex);
+            this.name.set(name); // Inisialisasi name
+            this.gender.set(gender);
             this.email.set(email);
             this.phone.set(phone);
             this.team.set(team);
@@ -39,221 +43,147 @@ public class Participant {
             this.wave.set(wave);
             this.status.set(status);
         }
-        public IntegerProperty noProperty(){ return no; }
-        public StringProperty  bibProperty(){ return bib; }
-        public StringProperty  nameProperty(){ return name; }
-        public StringProperty  sexProperty(){ return sex; }
-        public StringProperty  emailProperty(){ return email; }
-        public StringProperty  phoneProperty(){ return phone; }
-        public StringProperty  teamProperty(){ return team; }
-        public StringProperty  categoryProperty(){ return category; }
-        public StringProperty  waveProperty(){ return wave; }
-        public StringProperty  statusProperty(){ return status; }
+
+        public int getNo() { return no.get(); }
+        public String getBib() { return bib.get(); }
+        public String getName() { return name.get(); } // Tambahkan getter name
+        public String getGender() { return gender.get(); }
+        public String getEmail() { return email.get(); }
+        public String getPhone() { return phone.get(); }
+        public String getTeam() { return team.get(); }
+        public String getCategory() { return category.get(); }
+        public String getWave() { return wave.get(); }
+        public String getStatus() { return status.get(); }
+
+        public IntegerProperty noProperty() { return no; }
+        public StringProperty bibProperty() { return bib; }
+        public StringProperty nameProperty() { return name; } // Tambahkan property name
+        public StringProperty genderProperty() { return gender; }
+        public StringProperty emailProperty() { return email; }
+        public StringProperty phoneProperty() { return phone; }
+        public StringProperty teamProperty() { return team; }
+        public StringProperty categoryProperty() { return category; }
+        public StringProperty waveProperty() { return wave; }
+        public StringProperty statusProperty() { return status; }
     }
 
-    public Parent getView() {
-        VBox mainContent = new VBox(10);
-        mainContent.setPadding(new Insets(10));
-        mainContent.setStyle("-fx-background-color: #f3f3f3;");
+    // Tampilan utama
+    public static Parent createMainContent() {
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+        root.setStyle("-fx-background-color: #f4f4f4;");
 
         Label title = new Label("Data Participant");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-        HBox actionBar = new HBox(10);
-        actionBar.setAlignment(Pos.CENTER_LEFT);
+        // Tombol-tombol utama
+        Button addButton = new Button("Add", new FontIcon("fas-plus"));
+        Button editButton = new Button("Edit", new FontIcon("fas-edit"));
+        Button deleteButton = new Button("Delete", new FontIcon("fas-trash"));
+        Button deleteAllButton = new Button("Delete All", new FontIcon("fas-trash-alt"));
+        deleteAllButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 
-        Button addBtn = new Button("+ Add");
-        Button editBtn = new Button("Edit");
-        Button deleteBtn = new Button("Delete");
-        Button deleteAllBtn = new Button("Delete All");
-        deleteAllBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+        Button writeTagButton = new Button("Write Tag", new FontIcon("fas-pen"));
+        Button importButton = new Button("Import", new FontIcon("fas-file-import"));
+        Button downloadButton = new Button("Download", new FontIcon("fas-download"));
 
-        Region spacerAction = new Region();
-        HBox.setHgrow(spacerAction, Priority.ALWAYS);
+        HBox buttonBar = new HBox(5, addButton, editButton, deleteButton, deleteAllButton, writeTagButton, importButton, downloadButton);
+        buttonBar.setAlignment(Pos.CENTER_LEFT);
 
-        Label writeTag = new Label("Write Tag");
-        Label importBtn = new Label("Import");
-        Label downloadBtn = new Label("Download");
+        // Filter dan info jumlah
+        TextField filterField = new TextField();
+        filterField.setPromptText("Name & Bib Filter");
+        ComboBox<String> categoryBox = new ComboBox<>();
+        categoryBox.getItems().addAll("Category ...", "Category A", "Category B", "Category C");
+        categoryBox.getSelectionModel().selectFirst();
 
-        for (Label l : new Label[]{writeTag, importBtn, downloadBtn}) {
-            l.setStyle("-fx-border-color: #ccc; -fx-padding: 4 8;");
-        }
+        ComboBox<String> waveBox = new ComboBox<>();
+        waveBox.getItems().addAll("Semua ...", "Wave 1", "Wave 2");
+        waveBox.getSelectionModel().selectFirst();
 
-        HBox rightActions = new HBox(10, writeTag, importBtn, downloadBtn);
-        rightActions.setAlignment(Pos.CENTER_RIGHT);
+        Label participantCount = new Label("Number of Participants : 0");
 
-        actionBar.getChildren().addAll(addBtn, editBtn, deleteBtn, deleteAllBtn, spacerAction, rightActions);
-        HBox filterRow = new HBox(10);
-        filterRow.setAlignment(Pos.CENTER_LEFT);
+        HBox filterBar = new HBox(5, filterField, categoryBox, waveBox, participantCount);
+        filterBar.setAlignment(Pos.CENTER_LEFT);
 
-        TextField searchField = new TextField();
-        searchField.setPromptText("Name & Bib Filter");
-        searchField.setPrefWidth(250);
-
-        ComboBox<String> categoryFilter = new ComboBox<>();
-        categoryFilter.setPromptText("Category Filter");
-
-        ComboBox<String> statusFilter = new ComboBox<>();
-        statusFilter.setPromptText("Status Filter");
-
-        Region spacer2 = new Region();
-        HBox.setHgrow(spacer2, Priority.ALWAYS);
-
-        Label countLabel = new Label("Number of Participants: 0");
-        countLabel.setFont(Font.font("Arial", 10));
-
-        filterRow.getChildren().addAll(searchField, categoryFilter, statusFilter, spacer2, countLabel);
-
+        // TableView dengan kolom lengkap
         TableView<ParticipantRecord> table = new TableView<>();
         table.setPlaceholder(new Label("No content in table"));
-        table.setPrefHeight(600);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<ParticipantRecord, Number> cNo = new TableColumn<>("#");
-        TableColumn<ParticipantRecord, String> cBib = new TableColumn<>("Bib");
-        TableColumn<ParticipantRecord, String> cName = new TableColumn<>("Name");
-        TableColumn<ParticipantRecord, String> cSex = new TableColumn<>("Sex");
-        TableColumn<ParticipantRecord, String> cEmail = new TableColumn<>("Email");
-        TableColumn<ParticipantRecord, String> cPhone = new TableColumn<>("Phone");
-        TableColumn<ParticipantRecord, String> cTeam = new TableColumn<>("Team");
-        TableColumn<ParticipantRecord, String> cCategory = new TableColumn<>("Category");
-        TableColumn<ParticipantRecord, String> cWave = new TableColumn<>("Wave");
-        TableColumn<ParticipantRecord, String> cStatus = new TableColumn<>("Status");
+        TableColumn<ParticipantRecord, Number> noCol = new TableColumn<>("#");
+        noCol.setCellValueFactory(data -> data.getValue().noProperty());
 
-        cNo.setCellValueFactory(d -> d.getValue().noProperty());
-        cBib.setCellValueFactory(d -> d.getValue().bibProperty());
-        cName.setCellValueFactory(d -> d.getValue().nameProperty());
-        cSex.setCellValueFactory(d -> d.getValue().sexProperty());
-        cEmail.setCellValueFactory(d -> d.getValue().emailProperty());
-        cPhone.setCellValueFactory(d -> d.getValue().phoneProperty());
-        cTeam.setCellValueFactory(d -> d.getValue().teamProperty());
-        cCategory.setCellValueFactory(d -> d.getValue().categoryProperty());
-        cWave.setCellValueFactory(d -> d.getValue().waveProperty());
-        cStatus.setCellValueFactory(d -> d.getValue().statusProperty());
+        TableColumn<ParticipantRecord, String> bibCol = new TableColumn<>("BIB");
+        bibCol.setCellValueFactory(data -> data.getValue().bibProperty());
 
-        table.getColumns().addAll(cNo, cBib, cName, cSex, cEmail, cPhone, cTeam, cCategory, cWave, cStatus);
+        TableColumn<ParticipantRecord, String> nameCol = new TableColumn<>("Name"); // Kolom Name
+        nameCol.setCellValueFactory(data -> data.getValue().nameProperty());
 
-        ObservableList<ParticipantRecord> master = FXCollections.observableArrayList();
-        boolean addDummy = false; 
-        if (addDummy) {
-            master.addAll(
-                new ParticipantRecord(1, "A001", "Ani", "F", "ani@mail.com", "0812", "Team X", "10K", "Wave 1", "Paid"),
-                new ParticipantRecord(2, "B015", "Budi", "M", "budi@mail.com", "0813", "Team Y", "21K", "Wave 2", "Unpaid"),
-                new ParticipantRecord(3, "C033", "Caca", "F", "caca@mail.com", "0814", "Team X", "5K", "Wave 1", "Paid")
-            );
-        }
+        TableColumn<ParticipantRecord, String> genderCol = new TableColumn<>("Gender");
+        genderCol.setCellValueFactory(data -> data.getValue().genderProperty());
 
-        refreshFilterItems(master, categoryFilter, statusFilter);
+        TableColumn<ParticipantRecord, String> emailCol = new TableColumn<>("Email");
+        emailCol.setCellValueFactory(data -> data.getValue().emailProperty());
 
-        FilteredList<ParticipantRecord> filtered = new FilteredList<>(master, r -> true);
-        searchField.textProperty().addListener((obs, old, v) -> applyPredicate(filtered, searchField, categoryFilter, statusFilter));
-        categoryFilter.valueProperty().addListener((obs, o, v) -> applyPredicate(filtered, searchField, categoryFilter, statusFilter));
-        statusFilter.valueProperty().addListener((obs, o, v) -> applyPredicate(filtered, searchField, categoryFilter, statusFilter));
+        TableColumn<ParticipantRecord, String> phoneCol = new TableColumn<>("Phone");
+        phoneCol.setCellValueFactory(data -> data.getValue().phoneProperty());
 
-        SortedList<ParticipantRecord> sorted = new SortedList<>(filtered);
-        sorted.comparatorProperty().bind(table.comparatorProperty());
+        TableColumn<ParticipantRecord, String> teamCol = new TableColumn<>("Team");
+        teamCol.setCellValueFactory(data -> data.getValue().teamProperty());
 
-        Pagination pagination = new Pagination(1, 0);
-        pagination.setMaxPageIndicatorCount(7);
-        final int rowsPerPage = 25;
+        TableColumn<ParticipantRecord, String> categoryCol = new TableColumn<>("Category");
+        categoryCol.setCellValueFactory(data -> data.getValue().categoryProperty());
 
-        pagination.setPageFactory(pageIndex -> {
-            int from = pageIndex * rowsPerPage;
-            int to = Math.min(from + rowsPerPage, sorted.size());
-            if (from > to) {
-                table.setItems(FXCollections.observableArrayList());
-            } else {
-                table.setItems(FXCollections.observableArrayList(sorted.subList(from, to)));
-            }
-            return new VBox(); 
-        });
+        TableColumn<ParticipantRecord, String> waveCol = new TableColumn<>("Wave");
+        waveCol.setCellValueFactory(data -> data.getValue().waveProperty());
 
-        ListChangeListener<ParticipantRecord> recalcPages = c -> {
-            int pageCount = Math.max(1, (int) Math.ceil((double) sorted.size() / rowsPerPage));
-            pagination.setPageCount(pageCount);
-            int current = Math.min(pagination.getCurrentPageIndex(), pageCount - 1);
-            pagination.setCurrentPageIndex(Math.max(current, 0));
-        };
-        sorted.addListener(recalcPages);
-        recalcPages.onChanged(null);
-        countLabel.textProperty().bind(Bindings.size(filtered).asString("Number of Participants: %d"));
+        TableColumn<ParticipantRecord, String> statusCol = new TableColumn<>("Status");
+        statusCol.setCellValueFactory(data -> data.getValue().statusProperty());
 
-        addBtn.setOnAction(e -> {
-            int nextNo = master.size() + 1;
-            master.add(new ParticipantRecord(nextNo, "BIB"+nextNo, "New Person "+nextNo, "M", "", "", "", "", "", "Unpaid"));
-            renumber(master);
-            refreshFilterItems(master, categoryFilter, statusFilter);
-        });
+        table.getColumns().addAll(noCol, bibCol, nameCol, genderCol, emailCol, phoneCol, teamCol, categoryCol, waveCol, statusCol);
 
-        editBtn.setOnAction(e -> {
-            ParticipantRecord sel = table.getSelectionModel().getSelectedItem();
-            if (sel == null) {
-                new Alert(Alert.AlertType.INFORMATION, "Pilih satu baris untuk di-edit").showAndWait();
-                return;
-            }
-            sel.statusProperty().set("Paid".equals(sel.statusProperty().get()) ? "Unpaid" : "Paid");
-            table.refresh();
-        });
+        // Sample data (kosong dulu)
+        ObservableList<ParticipantRecord> data = FXCollections.observableArrayList();
 
-        deleteBtn.setOnAction(e -> {
-            ParticipantRecord sel = table.getSelectionModel().getSelectedItem();
-            if (sel == null) {
-                new Alert(Alert.AlertType.INFORMATION, "Pilih satu baris untuk dihapus").showAndWait();
-                return;
-            }
-            master.remove(sel);
-            renumber(master);
-            refreshFilterItems(master, categoryFilter, statusFilter);
-        });
-
-        deleteAllBtn.setOnAction(e -> {
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Delete ALL participants?", ButtonType.OK, ButtonType.CANCEL);
-            confirm.showAndWait().filter(btn -> btn == ButtonType.OK).ifPresent(btn -> {
-                master.clear();
-                refreshFilterItems(master, categoryFilter, statusFilter);
+        // Filtering dan sorting
+        FilteredList<ParticipantRecord> filteredData = new FilteredList<>(data, p -> true);
+        filterField.textProperty().addListener((obs, oldVal, newVal) -> {
+            filteredData.setPredicate(participant -> {
+                if (newVal == null || newVal.isEmpty()) return true;
+                String lower = newVal.toLowerCase();
+                return participant.getBib().toLowerCase().contains(lower) || participant.getName().toLowerCase().contains(lower);
             });
         });
 
-        mainContent.getChildren().addAll(title, actionBar, filterRow, table, pagination);
-        return mainContent;
-    }
-
-    private static void applyPredicate(FilteredList<ParticipantRecord> filtered,
-                                       TextField searchField,
-                                       ComboBox<String> categoryFilter,
-                                       ComboBox<String> statusFilter) {
-        String q = Optional.ofNullable(searchField.getText()).orElse("").trim().toLowerCase();
-        String cat = categoryFilter.getValue();
-        String sts = statusFilter.getValue();
-
-        filtered.setPredicate(rec -> {
-            boolean matchSearch = q.isEmpty()
-                    || (rec.nameProperty().get() != null && rec.nameProperty().get().toLowerCase().contains(q))
-                    || (rec.bibProperty().get() != null && rec.bibProperty().get().toLowerCase().contains(q));
-            boolean matchCat = (cat == null || cat.isEmpty()) || cat.equals(rec.categoryProperty().get());
-            boolean matchSts = (sts == null || sts.isEmpty()) || sts.equals(rec.statusProperty().get());
-            return matchSearch && matchCat && matchSts;
+        categoryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            filteredData.setPredicate(participant -> {
+                if (newVal.equals("Category ...")) return true;
+                return participant.getCategory().equals(newVal);
+            });
         });
-    }
 
-    private static void refreshFilterItems(ObservableList<ParticipantRecord> master,
-                                           ComboBox<String> categoryFilter,
-                                           ComboBox<String> statusFilter) {
-        Set<String> cat = master.stream()
-                .map(r -> r.categoryProperty().get())
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(Collectors.toCollection(TreeSet::new));
-        Set<String> sts = master.stream()
-                .map(r -> r.statusProperty().get())
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(Collectors.toCollection(TreeSet::new));
-        categoryFilter.getItems().setAll(cat);
-        statusFilter.getItems().setAll(sts);
-    }
+        waveBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            filteredData.setPredicate(participant -> {
+                if (newVal.equals("Semua ...")) return true;
+                return participant.getWave().equals(newVal);
+            });
+        });
 
-    private static void renumber(ObservableList<ParticipantRecord> master) {
-        for (int i = 0; i < master.size(); i++) {
-            master.get(i).noProperty().set(i + 1);
-        }
+        SortedList<ParticipantRecord> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty());
+        table.setItems(sortedData);
+
+        // Update jumlah peserta
+        participantCount.textProperty().bind(Bindings.createStringBinding(
+            () -> "Number of Participants : " + sortedData.size(), sortedData
+        ));
+
+        // Pagination
+        Pagination pagination = new Pagination(1, 0);
+        pagination.setPageFactory(pageIndex -> table);
+
+        VBox.setVgrow(table, Priority.ALWAYS);
+        root.getChildren().addAll(title, buttonBar, filterBar, table, pagination);
+        return root;
     }
 }
