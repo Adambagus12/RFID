@@ -1,5 +1,6 @@
 package src;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
@@ -8,9 +9,12 @@ import javafx.collections.*;
 import javafx.collections.transformation.*;
 import javafx.geometry.*;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 // Ikonli (FontAwesome)
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -20,15 +24,15 @@ public class Participant {
 
     public static class ParticipantRecord {
         private final IntegerProperty no = new SimpleIntegerProperty();
-        private final StringProperty  bib = new SimpleStringProperty();
-        private final StringProperty  name = new SimpleStringProperty();
-        private final StringProperty  sex = new SimpleStringProperty();
-        private final StringProperty  email = new SimpleStringProperty();
-        private final StringProperty  phone = new SimpleStringProperty();
-        private final StringProperty  team = new SimpleStringProperty();
-        private final StringProperty  category = new SimpleStringProperty();
-        private final StringProperty  wave = new SimpleStringProperty();
-        private final StringProperty  status = new SimpleStringProperty();
+        private final StringProperty bib = new SimpleStringProperty();
+        private final StringProperty name = new SimpleStringProperty();
+        private final StringProperty sex = new SimpleStringProperty();
+        private final StringProperty email = new SimpleStringProperty();
+        private final StringProperty phone = new SimpleStringProperty();
+        private final StringProperty team = new SimpleStringProperty();
+        private final StringProperty category = new SimpleStringProperty();
+        private final StringProperty wave = new SimpleStringProperty();
+        private final StringProperty status = new SimpleStringProperty();
 
         public ParticipantRecord(int no, String bib, String name, String sex, String email, String phone,
                                  String team, String category, String wave, String status) {
@@ -43,16 +47,17 @@ public class Participant {
             this.wave.set(wave);
             this.status.set(status);
         }
-        public IntegerProperty noProperty(){ return no; }
-        public StringProperty  bibProperty(){ return bib; }
-        public StringProperty  nameProperty(){ return name; }
-        public StringProperty  sexProperty(){ return sex; }
-        public StringProperty  emailProperty(){ return email; }
-        public StringProperty  phoneProperty(){ return phone; }
-        public StringProperty  teamProperty(){ return team; }
-        public StringProperty  categoryProperty(){ return category; }
-        public StringProperty  waveProperty(){ return wave; }
-        public StringProperty  statusProperty(){ return status; }
+
+        public IntegerProperty noProperty() { return no; }
+        public StringProperty bibProperty() { return bib; }
+        public StringProperty nameProperty() { return name; }
+        public StringProperty sexProperty() { return sex; }
+        public StringProperty emailProperty() { return email; }
+        public StringProperty phoneProperty() { return phone; }
+        public StringProperty teamProperty() { return team; }
+        public StringProperty categoryProperty() { return category; }
+        public StringProperty waveProperty() { return wave; }
+        public StringProperty statusProperty() { return status; }
     }
 
     public Parent getView() {
@@ -72,6 +77,9 @@ public class Participant {
         Button deleteBtn = new Button(" Delete", new FontIcon(FontAwesomeSolid.TRASH));
         Button deleteAllBtn = new Button(" Delete All", new FontIcon(FontAwesomeSolid.TRASH_ALT));
         deleteAllBtn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
+        FontIcon deleteAllIcon = (FontIcon) deleteAllBtn.getGraphic();
+        deleteAllIcon.setIconColor(javafx.scene.paint.Color.WHITE);
 
         Region spacerAction = new Region();
         HBox.setHgrow(spacerAction, Priority.ALWAYS);
@@ -139,14 +147,6 @@ public class Participant {
 
         // ==== DATA ====
         ObservableList<ParticipantRecord> master = FXCollections.observableArrayList();
-        boolean addDummy = false; 
-        if (addDummy) {
-            master.addAll(
-                new ParticipantRecord(1, "A001", "Ani", "F", "ani@mail.com", "0812", "Team X", "10K", "Wave 1", "Paid"),
-                new ParticipantRecord(2, "B015", "Budi", "M", "budi@mail.com", "0813", "Team Y", "21K", "Wave 2", "Unpaid"),
-                new ParticipantRecord(3, "C033", "Caca", "F", "caca@mail.com", "0814", "Team X", "5K", "Wave 1", "Paid")
-            );
-        }
 
         refreshFilterItems(master, categoryFilter, statusFilter);
 
@@ -171,7 +171,7 @@ public class Participant {
             } else {
                 table.setItems(FXCollections.observableArrayList(sorted.subList(from, to)));
             }
-            return new VBox(); 
+            return new VBox();
         });
 
         ListChangeListener<ParticipantRecord> recalcPages = c -> {
@@ -186,11 +186,39 @@ public class Participant {
 
         // ==== BUTTON ACTIONS ====
         addBtn.setOnAction(e -> {
-            int nextNo = master.size() + 1;
-            master.add(new ParticipantRecord(nextNo, "BIB"+nextNo, "New Person "+nextNo, "M", "", "", "", "", "", "Unpaid"));
-            renumber(master);
-            refreshFilterItems(master, categoryFilter, statusFilter);
+        AddParticipant addDialog = new AddParticipant(formData -> {
+        int nextNo = master.size() + 1;
+        ParticipantRecord record = new ParticipantRecord(
+                nextNo,
+                formData.bib,
+                (formData.firstName + " " + formData.lastName).trim(),
+                formData.sex,
+                formData.email,
+                formData.phone,
+                formData.team,
+                formData.category,
+                formData.wave,
+                "Unpaid"
+                );
+        master.add(record);
+        renumber(master);
+                refreshFilterItems(master, categoryFilter, statusFilter);
+            });
+    addDialog.show();
         });
+
+        writeTag.setOnAction(e -> {
+            WriteTag writeTagWindow = new WriteTag();
+            writeTagWindow.showWindow();
+        });
+
+        importBtn.setOnAction(e -> {
+            ImportDataParticipant dialog = new ImportDataParticipant();
+            Stage stage = (Stage) mainContent.getScene().getWindow();
+            dialog.show(stage);
+        });
+
+
 
         editBtn.setOnAction(e -> {
             ParticipantRecord sel = table.getSelectionModel().getSelectedItem();
@@ -220,6 +248,37 @@ public class Participant {
                 refreshFilterItems(master, categoryFilter, statusFilter);
             });
         });
+
+        downloadBtn.setOnAction(e -> {
+    FileChooser fc = new FileChooser();
+    fc.setTitle("Save Template File");
+    fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel File", "*.xlsx"));
+    fc.setInitialFileName("ParticipantTemplate.xlsx");
+
+    File saveFile = fc.showSaveDialog(downloadBtn.getScene().getWindow());
+    if (saveFile != null) {
+        try {
+            // TODO: ganti dengan file template asli kamu
+            // contoh: tulis template kosong
+            java.nio.file.Files.write(saveFile.toPath(),
+                    "Nama,Bib,Gender,Age\n".getBytes());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION,
+                    "Template berhasil disimpan di:\n" + saveFile.getAbsolutePath(),
+                    ButtonType.OK);
+            alert.initOwner(downloadBtn.getScene().getWindow());
+            alert.showAndWait();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "Gagal menyimpan template: " + ex.getMessage(),
+                    ButtonType.OK);
+            alert.initOwner(downloadBtn.getScene().getWindow());
+            alert.showAndWait();
+        }
+    }
+});
+
 
         mainContent.getChildren().addAll(title, actionBar, filterRow, table, pagination);
         return mainContent;
