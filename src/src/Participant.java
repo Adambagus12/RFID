@@ -15,8 +15,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-// Ikonli (FontAwesome)
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 
@@ -67,8 +65,6 @@ public class Participant {
 
         Label title = new Label("Data Participant");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-        // ==== ACTION BAR ====
         HBox actionBar = new HBox(10);
         actionBar.setAlignment(Pos.CENTER_LEFT);
 
@@ -92,8 +88,6 @@ public class Participant {
         rightActions.setAlignment(Pos.CENTER_RIGHT);
 
         actionBar.getChildren().addAll(addBtn, editBtn, deleteBtn, deleteAllBtn, spacerAction, rightActions);
-
-        // ==== FILTER ROW ====
         HBox filterRow = new HBox(10);
         filterRow.setAlignment(Pos.CENTER_LEFT);
 
@@ -115,7 +109,6 @@ public class Participant {
 
         filterRow.getChildren().addAll(searchField, categoryFilter, statusFilter, spacer2, countLabel);
 
-        // ==== TABLE ====
         TableView<ParticipantRecord> table = new TableView<>();
         table.setPlaceholder(new Label("No content in table"));
         table.setPrefHeight(600);
@@ -145,7 +138,6 @@ public class Participant {
 
         table.getColumns().addAll(cNo, cBib, cName, cSex, cEmail, cPhone, cTeam, cCategory, cWave, cStatus);
 
-        // ==== DATA ====
         ObservableList<ParticipantRecord> master = FXCollections.observableArrayList();
 
         refreshFilterItems(master, categoryFilter, statusFilter);
@@ -158,7 +150,6 @@ public class Participant {
         SortedList<ParticipantRecord> sorted = new SortedList<>(filtered);
         sorted.comparatorProperty().bind(table.comparatorProperty());
 
-        // ==== PAGINATION ====
         Pagination pagination = new Pagination(1, 0);
         pagination.setMaxPageIndicatorCount(7);
         final int rowsPerPage = 25;
@@ -184,7 +175,6 @@ public class Participant {
         recalcPages.onChanged(null);
         countLabel.textProperty().bind(Bindings.size(filtered).asString("Number of Participants: %d"));
 
-        // ==== BUTTON ACTIONS ====
         addBtn.setOnAction(e -> {
         AddParticipant addDialog = new AddParticipant(formData -> {
         int nextNo = master.size() + 1;
@@ -258,8 +248,7 @@ public class Participant {
     File saveFile = fc.showSaveDialog(downloadBtn.getScene().getWindow());
     if (saveFile != null) {
         try {
-            // TODO: ganti dengan file template asli kamu
-            // contoh: tulis template kosong
+
             java.nio.file.Files.write(saveFile.toPath(),
                     "Nama,Bib,Gender,Age\n".getBytes());
 
@@ -278,7 +267,6 @@ public class Participant {
         }
     }
 });
-
 
         mainContent.getChildren().addAll(title, actionBar, filterRow, table, pagination);
         return mainContent;

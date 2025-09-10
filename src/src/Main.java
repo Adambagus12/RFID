@@ -21,23 +21,19 @@ public class Main extends Application {
 
         VBox sidebarHost = new VBox();
         sidebarHost.setPrefWidth(80);
-        sidebarHost.setMinWidth(80);   // ✅ kunci supaya tidak mengecil
-        sidebarHost.setMaxWidth(80);   // ✅ kunci supaya tidak membesar
+        sidebarHost.setMinWidth(80);   
+        sidebarHost.setMaxWidth(80);   
         HBox.setHgrow(sidebarHost, Priority.NEVER);
 
         mainPane = new BorderPane();
         mainPane.setPadding(new Insets(0, 0, 0, 0));
         HBox.setHgrow(mainPane, Priority.ALWAYS);
 
-        // ✅ init navigator
         Navigator.init(mainPane);
         Navigator.setHomeSupplier(Home::createMainContent);
 
-        // ✅ top bar
         mainPane.setTop(TopBarFactory.createTopBar());
         TopBarFactory.setNavigator(Navigator::navigate);
-
-        // ✅ sidebar (cukup passing Consumer<String>)
         sidebarHost.getChildren().setAll(
             SidebarFactory.createSidebar(Navigator::navigate)
         );
@@ -48,8 +44,6 @@ public class Main extends Application {
         stage.setTitle("Event");
         stage.setScene(scene);
         stage.show();
-
-        // ✅ halaman awal
         Navigator.navigate("CloseEvent");
     }
 }

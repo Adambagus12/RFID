@@ -21,7 +21,6 @@ public class AddSplit {
         VBox mainBox = new VBox();
         root.setCenter(mainBox);
 
-        // Form bagian kiri (label)
         VBox leftBox = new VBox(30);
         leftBox.setPadding(new Insets(28, 0, 0, 20));
         Label lblOrder = new Label("Order");
@@ -38,7 +37,6 @@ public class AddSplit {
         lblCategory.setFont(Font.font(17));
         leftBox.getChildren().addAll(lblOrder, lblName, lblType, lblDistance, lblGap, lblCategory);
 
-        // Form bagian kanan (input)
         VBox rightBox = new VBox(20);
         rightBox.setPadding(new Insets(15, 20, 0, 0));
         TextField txtOrder = new TextField();
@@ -68,7 +66,6 @@ public class AddSplit {
 
         HBox form = new HBox(leftBox, rightBox);
 
-        // Tombol Save & Cancel
         HBox buttons = new HBox(20);
         buttons.setPadding(new Insets(10, 20, 10, 0));
         buttons.setSpacing(10);

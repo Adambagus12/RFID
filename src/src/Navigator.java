@@ -18,16 +18,12 @@ import javafx.stage.Window;
 public class Navigator {
     private static BorderPane mainPane;
 
-    // 🔹 Properti event aktif
     private static final BooleanProperty eventActive = new SimpleBooleanProperty(false);
 
-    // 🔹 Nama event aktif
     private static final StringProperty activeEventName = new SimpleStringProperty("");
 
-    // 🔹 Halaman aktif
     private static final StringProperty activePage = new SimpleStringProperty("Welcome");
 
-    // 🔹 Supplier halaman Home
     private static Supplier<Parent> homeSupplier;
 
     public static void init(BorderPane pane) {
@@ -38,7 +34,6 @@ public class Navigator {
         homeSupplier = supplier;
     }
 
-    // 🔹 Navigasi antar halaman
     public static void navigateTo(String page) {
         if (mainPane == null) return;
 
@@ -87,7 +82,6 @@ public class Navigator {
             }
             case "CloseEvent" -> mainPane.setCenter(new CloseEvent().getView());
 
-            // 🔹 Halaman tambahan: Tag Check (popup window)
             case "Tag Check" -> {
                 Window owner = getOwnerWindow();
                 if (owner instanceof Stage stage) {
@@ -98,14 +92,10 @@ public class Navigator {
         }
     }
 
-    // 🔹 Alias navigasi
     public static void navigate(String page) {
         navigateTo(page);
     }
 
-    // ================== Getter & Setter ==================
-
-    // Event aktif
     public static BooleanProperty eventActiveProperty() {
         return eventActive;
     }
@@ -118,7 +108,6 @@ public class Navigator {
         eventActive.set(active);
     }
 
-    // Nama event aktif
     public static StringProperty activeEventNameProperty() {
         return activeEventName;
     }
@@ -131,7 +120,6 @@ public class Navigator {
         activeEventName.set(name);
     }
 
-    // Halaman aktif
     public static StringProperty activePageProperty() {
         return activePage;
     }
@@ -144,7 +132,6 @@ public class Navigator {
         activePage.set(page);
     }
 
-    // Ambil window utama dengan aman
     private static Window getOwnerWindow() {
         return (mainPane != null && mainPane.getScene() != null)
                 ? mainPane.getScene().getWindow()

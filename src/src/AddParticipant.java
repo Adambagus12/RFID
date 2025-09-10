@@ -38,7 +38,6 @@ public class AddParticipant {
         grid.setVgap(12);
         grid.setPadding(new Insets(15));
 
-        // Column constraints: [Label, Field, Label, Field]
         ColumnConstraints col1 = new ColumnConstraints(100);
         col1.setHalignment(HPos.RIGHT);
         ColumnConstraints col2 = new ColumnConstraints(300);
@@ -49,7 +48,6 @@ public class AddParticipant {
 
         String fieldStyle = "-fx-pref-height: 30px; -fx-pref-width: 300px;";
 
-        // Input Fields
         TextField bibField = new TextField();          bibField.setStyle(fieldStyle);
         TextField lastNameField = new TextField();     lastNameField.setStyle(fieldStyle);
         ComboBox<String> sexCombo = new ComboBox<>();  sexCombo.getItems().addAll("M", "F"); sexCombo.setStyle(fieldStyle);
@@ -62,7 +60,6 @@ public class AddParticipant {
         ComboBox<String> waveCombo = new ComboBox<>(); waveCombo.getItems().addAll("Wave 1","Wave 2","Wave 3"); waveCombo.setStyle(fieldStyle);
         TextField phoneField = new TextField();        phoneField.setStyle(fieldStyle);
 
-        // Labels
         Label lblBib = new Label("Bib Num");
         Label lblLast = new Label("Last Name");
         Label lblSex = new Label("Sex");
@@ -80,14 +77,12 @@ public class AddParticipant {
             lbl.setFont(Font.font("System", FontWeight.NORMAL, 15));
         }
 
-        // Susun Grid (2 kolom form)
         grid.addRow(0, lblBib, bibField, lblCategory, categoryCombo);
         grid.addRow(1, lblLast, lastNameField, lblFirst, firstNameField);
         grid.addRow(2, lblSex, sexCombo, lblBirth, birthDatePicker);
         grid.addRow(3, lblTeam, teamField, lblWave, waveCombo);
         grid.addRow(4, lblEmail, emailField, lblPhone, phoneField);
 
-        // Tombol
         Button btnSave = new Button(" Save", new FontIcon("fas-save"));
         btnSave.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-pref-height: 35px; -fx-pref-width: 85px; -fx-font-size: 14px; -fx-icon-size: 18;");
         btnSave.setOnAction(e -> {
@@ -113,10 +108,10 @@ public class AddParticipant {
 
         HBox buttonBox = new HBox(10, btnSave, btnCancel);
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
-        buttonBox.setPadding(new Insets(0, 20, 15, 20)); // atas, kanan, bawah, kiri
+        buttonBox.setPadding(new Insets(0, 20, 15, 20));
 
         VBox root = new VBox(12, grid, buttonBox);
-        root.setPadding(new Insets(2)); // padding keseluruhan
+        root.setPadding(new Insets(2)); 
         root.setStyle("-fx-background-color: #f4f4f4;");
 
         stage.setScene(new Scene(root));

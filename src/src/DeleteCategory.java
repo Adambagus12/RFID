@@ -19,14 +19,12 @@ public class DeleteCategory {
         VBox root = new VBox(15);
         root.setPadding(new Insets(20));
 
-        // ✅ Label konfirmasi
         Label lblConfirm = new Label("Are You Sure to Delete This Category");
         lblConfirm.setFont(Font.font(15));
 
         HBox labelBox = new HBox(lblConfirm);
         labelBox.setStyle("-fx-alignment: center;");
 
-        // ✅ Tombol
         Button btnOk = new Button("Ok");
         btnOk.setStyle("-fx-background-color: green; -fx-text-fill: white;");
         btnOk.setFont(Font.font(14));

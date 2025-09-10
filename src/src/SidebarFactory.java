@@ -17,7 +17,6 @@ import javafx.scene.text.TextAlignment;
 
 public class SidebarFactory {
 
-    // ✅ bikin method sesuai kebutuhan Main (Consumer<String>)
     public static VBox createSidebar(Consumer<String> onNavigate) {
         VBox sidebar = new VBox();
         sidebar.setStyle("-fx-background-color: #151233;");
@@ -35,7 +34,6 @@ public class SidebarFactory {
             }
         });
 
-        // 🔹 Logo
         ImageView logo = new ImageView(new Image("file:assets/ironativ_logo.png"));
         logo.setFitHeight(30);
         logo.setPreserveRatio(true);
@@ -44,13 +42,11 @@ public class SidebarFactory {
         logoBox.setAlignment(Pos.CENTER);
         sidebar.getChildren().add(logoBox);
 
-        // 🔹 Menu buttons
         VBox btnHome        = createSidebarButton("Home", "file:assets/home.png", onNavigate);
         VBox btnParticipant = createSidebarButton("Participant", "file:assets/running.png", onNavigate);
         VBox btnTiming      = createSidebarButton("Timing", "file:assets/stopwatch.png", onNavigate);
         VBox btnSetting     = createSidebarButton("Setting", "file:assets/settings.png", onNavigate);
 
-        // 🔹 Bind aktif / nonaktif sesuai Navigator
         btnHome.disableProperty().bind(Navigator.eventActiveProperty().not());
         btnParticipant.disableProperty().bind(Navigator.eventActiveProperty().not());
         btnTiming.disableProperty().bind(Navigator.eventActiveProperty().not());
@@ -58,7 +54,6 @@ public class SidebarFactory {
 
         sidebar.getChildren().addAll(btnHome, btnParticipant, btnTiming, btnSetting);
 
-        // 🔹 filler biar menu nempel atas
         Region filler = new Region();
         VBox.setVgrow(filler, Priority.ALWAYS);
         sidebar.getChildren().add(filler);
@@ -70,7 +65,7 @@ public class SidebarFactory {
         VBox box = new VBox(3);
         box.setAlignment(Pos.CENTER);
         box.setPadding(new Insets(4));
-        box.setStyle("-fx-background-color: transparent;"); // default
+        box.setStyle("-fx-background-color: transparent;");
 
         ImageView icon = new ImageView(new Image(iconPath));
         icon.setFitHeight(18);
@@ -88,7 +83,6 @@ public class SidebarFactory {
         Tooltip.install(box, new Tooltip(title));
         box.getChildren().addAll(icon, label);
 
-        // 🔹 Binding ke activePage (supaya highlight mengikuti Navigator)
         Navigator.activePageProperty().addListener((obs, oldPage, newPage) -> {
             if (title.equals(newPage)) {
                 box.setStyle("-fx-background-color: #4B437F;");
@@ -97,7 +91,6 @@ public class SidebarFactory {
             }
         });
 
-        // Hover effect
         box.setOnMouseEntered(e -> {
             if (!box.isDisabled()) {
                 box.setStyle("-fx-background-color: #2f2a52;");
@@ -105,7 +98,6 @@ public class SidebarFactory {
             }
         });
         box.setOnMouseExited(e -> {
-            // kembalikan ke kondisi sesuai activePage
             if (title.equals(Navigator.getActivePage())) {
                 box.setStyle("-fx-background-color: #4B437F;");
             } else {
@@ -113,7 +105,6 @@ public class SidebarFactory {
             }
         });
 
-        // Klik navigasi
         box.setOnMouseClicked(e -> {
             if (!box.isDisabled() && onNavigate != null) {
                 onNavigate.accept(title);

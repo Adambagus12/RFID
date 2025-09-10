@@ -21,11 +21,9 @@ public class Timing {
         root.setCenter(center);
         VBox.setVgrow(center, Priority.ALWAYS);
 
-        // ================= TOP ROW =================
         HBox topRow = new HBox(10);
         HBox.setHgrow(topRow, Priority.ALWAYS);
 
-        // ----------- BIB Section -----------
         VBox bibBox = new VBox(10);
         bibBox.setPadding(new Insets(16));
         bibBox.setFillWidth(true);
@@ -61,7 +59,6 @@ public class Timing {
         statsRow.getChildren().addAll(statsLabels, statsValues);
         bibBox.getChildren().addAll(bibTitle, bibField, statsRow);
 
-        // ----------- Start / Upload Section -----------
         VBox startUploadBox = new VBox(10);
         startUploadBox.setFillWidth(true);
         startUploadBox.setAlignment(Pos.TOP_CENTER);
@@ -71,7 +68,6 @@ public class Timing {
         buttonsRow.setAlignment(Pos.CENTER);
         buttonsRow.setPadding(new Insets(0, 10, 0, 10));
 
-        // Tombol Start
         FontIcon startIcon = new FontIcon(FontAwesomeSolid.PLAY);
         startIcon.setIconSize(18);
         startIcon.setIconColor(Color.WHITE);
@@ -80,7 +76,6 @@ public class Timing {
         btnStart.setFont(Font.font("Arial", 18));
         btnStart.setPadding(new Insets(10, 20, 10, 20));
 
-        // Tombol Upload
         FontIcon uploadIcon = new FontIcon(FontAwesomeSolid.UPLOAD);
         uploadIcon.setIconSize(18);
         uploadIcon.setIconColor(Color.WHITE);
@@ -116,7 +111,6 @@ public class Timing {
         rectCol.getChildren().addAll(r1, r2);
         startUploadBox.getChildren().addAll(buttonsRow, rectCol);
 
-        // ----------- Left Table (Devices) -----------
         TableView<Void> tvLeft = new TableView<>();
         tvLeft.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvLeft.setPlaceholder(new Label("No data"));
@@ -128,7 +122,6 @@ public class Timing {
         TableColumn<Void, String> c_l4 = new TableColumn<>("Connected?");
         tvLeft.getColumns().addAll(c_l1, c_l2, c_l3, c_l4);
 
-        // ----------- Right Table (Tags) -----------
         TableView<Void> tvRight = new TableView<>();
         tvRight.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvRight.setPlaceholder(new Label("No data"));
@@ -144,7 +137,6 @@ public class Timing {
 
         topRow.getChildren().addAll(bibBox, startUploadBox, tvLeft, tvRight);
 
-        // ================= SPLIT =================
         SplitPane split = new SplitPane();
         split.setDividerPositions(0.22);
         VBox.setVgrow(split, Priority.ALWAYS);
@@ -166,7 +158,6 @@ public class Timing {
         HBox filtersRow = new HBox(10);
         filtersRow.setAlignment(Pos.CENTER_LEFT);
 
-        // ----------- Filter Left -----------
         HBox filtersLeft = new HBox(10);
         filtersLeft.setAlignment(Pos.CENTER_LEFT);
 
@@ -182,11 +173,10 @@ public class Timing {
 
         filtersLeft.getChildren().addAll(searchIcon, tfSearch, cb1, cb2);
 
-        // ----------- Filter Right -----------
         HBox filtersRight = new HBox(10);
         filtersRight.setAlignment(Pos.CENTER_RIGHT);
 
-        FontIcon refreshIcon = new FontIcon(FontAwesomeSolid.SYNC_ALT); // ganti ROTATE
+        FontIcon refreshIcon = new FontIcon(FontAwesomeSolid.SYNC_ALT); 
         refreshIcon.setIconSize(16);
         Button btnRefresh = new Button("Refresh", refreshIcon);
         btnRefresh.setFont(Font.font("Arial", 14));
@@ -204,7 +194,6 @@ public class Timing {
         filtersRight.getChildren().addAll(spacerFR, btnRefresh, btnII);
         filtersRow.getChildren().addAll(filtersLeft, filtersRight);
 
-        // ----------- Main Table -----------
         TableView<Void> tvMain = new TableView<>();
         tvMain.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tvMain.setPlaceholder(new Label("No data"));

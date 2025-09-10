@@ -20,19 +20,15 @@ public class Setting extends BorderPane {
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        // ✅ Tab Event
         Tab tabEvent = new Tab("Event");
         tabEvent.setContent(buildEventTab());
 
-        // ✅ Tab Wave
         Tab tabWave = new Tab("Wave");
         tabWave.setContent(buildWaveTab());
 
-        // ✅ Tab Category
         Tab tabCategory = new Tab("Category");
         tabCategory.setContent(buildCategoryTab());
 
-        // ✅ Tab Split
         Tab tabSplit = new Tab("Split");
         tabSplit.setContent(buildSplitTab());
 
@@ -45,16 +41,12 @@ public class Setting extends BorderPane {
         return this;
     }
 
-    // ---------------------------
-    // TAB EVENT
-    // ---------------------------
     private AnchorPane buildEventTab() {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(20);
         wrapper.setPadding(new Insets(15));
         VBox.setVgrow(wrapper, Priority.ALWAYS);
 
-        // Section: Event
         VBox sectionEvent = new VBox(10);
         sectionEvent.setAlignment(Pos.TOP_LEFT);
 
@@ -63,13 +55,11 @@ public class Setting extends BorderPane {
         lblEventTitle.setAlignment(Pos.CENTER);
         lblEventTitle.setMaxWidth(Double.MAX_VALUE);
 
-        // Row 1
         HBox row1 = new HBox(15,
                 createCodeField("Code", 250, 42, "Adam"),
                 createVBoxWithLabelAndField("Name", 280, 42, "Event Name"),
                 createVBoxWithLabelAndField("Backup URL", 890, 42, "Event Backup URL"));
 
-        // Row 2
         HBox row2 = new HBox(15,
                 createVBoxWithDatePicker("Date", 500, 42),
                 createVBoxWithLabelAndField("Distance", 450, 42, "Event Distance"),
@@ -77,7 +67,6 @@ public class Setting extends BorderPane {
 
         sectionEvent.getChildren().addAll(lblEventTitle, row1, row2);
 
-        // Section: Address
         VBox sectionAddress = new VBox(10);
         sectionAddress.setAlignment(Pos.TOP_LEFT);
 
@@ -97,7 +86,6 @@ public class Setting extends BorderPane {
 
         sectionAddress.getChildren().addAll(lblAddressTitle, rowA1, rowA2);
 
-        // Section: Race Director
         VBox sectionRD = new VBox(10);
         sectionRD.setAlignment(Pos.TOP_LEFT);
 
@@ -111,7 +99,6 @@ public class Setting extends BorderPane {
                 createVBoxWithLabelAndField("Email", 473, 42, "Event Race Director Email"),
                 createVBoxWithLabelAndField("Phone", 473, 42, "Event Race Director Phone"));
 
-        // ✅ Row tombol
         HBox rowRD2 = new HBox(20);
         rowRD2.setAlignment(Pos.CENTER);
         rowRD2.setPadding(new Insets(20, 0, 0, 0));
@@ -146,9 +133,6 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ---------------------------
-    // TAB WAVE
-    // ---------------------------
     private AnchorPane buildWaveTab() {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(15);
@@ -213,9 +197,6 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ---------------------------
-    // TAB CATEGORY
-    // ---------------------------
     private AnchorPane buildCategoryTab() {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(15);
@@ -265,7 +246,6 @@ public class Setting extends BorderPane {
 
         anchor.getChildren().add(wrapper);
 
-        // ✅ AddCategory dialog
         btnAddCategory.setOnAction(e -> {
             AddCategory dialog = new AddCategory();
             String result = dialog.showAndWait();
@@ -274,7 +254,6 @@ public class Setting extends BorderPane {
             }
         });
 
-        // ✅ DeleteCategory dialog
         btnDeleteCategory.setOnAction(e -> {
             DeleteCategory dialog = new DeleteCategory();
             boolean confirmed = dialog.showAndWait();
@@ -286,9 +265,6 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ---------------------------
-    // TAB SPLIT
-    // ---------------------------
     private AnchorPane buildSplitTab() {
         AnchorPane anchor = new AnchorPane();
         VBox wrapper = new VBox(15);
@@ -347,7 +323,6 @@ public class Setting extends BorderPane {
 
         anchor.getChildren().add(wrapper);
 
-        // ✅ AddSplit dialog
         btnAddSplit.setOnAction(e -> {
             AddSplit dialog = new AddSplit();
             String result = dialog.showAndWait();
@@ -356,7 +331,6 @@ public class Setting extends BorderPane {
             }
         });
 
-        // ✅ DeleteSplit dialog
         btnDeleteSplit.setOnAction(e -> {
             DeleteSplit dialog = new DeleteSplit();
             boolean confirmed = dialog.showAndWait();
@@ -368,9 +342,6 @@ public class Setting extends BorderPane {
         return anchor;
     }
 
-    // ---------------------------
-    // HELPER
-    // ---------------------------
     private VBox createVBoxWithLabelAndField(String labelText, double width, double height, String promptText) {
         VBox vbox = new VBox(5);
         Label label = new Label(labelText);

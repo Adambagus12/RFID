@@ -36,7 +36,7 @@ public class Home {
 
         Text subtitle = new Text();
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
-        VBox.setMargin(subtitle, new Insets(0, 0, 0, 10)); // ✅ tambahan agar sejajar dengan Welcome
+        VBox.setMargin(subtitle, new Insets(0, 0, 0, 10)); 
 
         subtitle.textProperty().bind(
             Bindings.when(Navigator.eventActiveProperty())

@@ -22,11 +22,9 @@ public class AddCategory extends AnchorPane {
         VBox root = new VBox();
         root.setPrefSize(550, 200);
 
-        // Bagian atas (Label + Field)
         HBox hBoxTop = new HBox();
         hBoxTop.setPrefSize(550, 200);
 
-        // Kolom kiri (Label)
         VBox vboxLeft = new VBox();
         vboxLeft.setPrefSize(145, 150);
         vboxLeft.setPadding(new Insets(15, 0, 0, 20));
@@ -42,7 +40,6 @@ public class AddCategory extends AnchorPane {
 
         vboxLeft.getChildren().addAll(lblName, lblWave);
 
-        // Kolom kanan (Input)
         VBox vboxRight = new VBox();
         vboxRight.setPrefSize(405, 150);
         vboxRight.setPadding(new Insets(15, 20, 0, 0));
@@ -58,7 +55,6 @@ public class AddCategory extends AnchorPane {
 
         hBoxTop.getChildren().addAll(vboxLeft, vboxRight);
 
-        // Bagian bawah (Button)
         HBox hBoxBottom = new HBox();
         hBoxBottom.setPrefSize(550, 150);
         hBoxBottom.setAlignment(Pos.CENTER_RIGHT);
@@ -83,7 +79,6 @@ public class AddCategory extends AnchorPane {
 
         getChildren().add(root);
 
-        // Action tombol
         btnSave.setOnAction(e -> {
             result = txtName.getText();
             Stage stage = (Stage) getScene().getWindow();
@@ -97,7 +92,6 @@ public class AddCategory extends AnchorPane {
         });
     }
 
-    // ✅ Method showAndWait biar mirip AddWave
     public String showAndWait() {
         Stage dialog = new Stage();
         dialog.setTitle("Add Category");

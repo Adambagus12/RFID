@@ -13,28 +13,23 @@ public class WriteTag extends BorderPane {
 
     public WriteTag() {
         setPadding(new Insets(10));
-
-        // Top navigation
         HBox topNav = new HBox(10);
         topNav.setAlignment(Pos.CENTER);
 
-// Tombol kiri
 FontIcon leftIcon = new FontIcon("far-arrow-alt-circle-left");
-leftIcon.setIconSize(32); // atur ukuran ikon (default 16px)
+leftIcon.setIconSize(32); 
 
 Button leftBtn = new Button();
 leftBtn.setGraphic(leftIcon);
 leftBtn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-leftBtn.setPrefSize(55, 55); // ukuran tombol biar proporsional
+leftBtn.setPrefSize(55, 55); 
 
-// Field pencarian
 TextField searchField = new TextField();
 searchField.setPrefWidth(250);
 searchField.setPrefHeight(55);
 
-// Tombol kanan
 FontIcon rightIcon = new FontIcon("far-arrow-alt-circle-right");
-rightIcon.setIconSize(32); // atur ukuran ikon
+rightIcon.setIconSize(32); 
 
 Button rightBtn = new Button();
 rightBtn.setGraphic(rightIcon);
@@ -45,7 +40,6 @@ rightBtn.setPrefSize(55, 55);
         topNav.getChildren().addAll(leftBtn, searchField, rightBtn);
         setTop(topNav);
 
-        // Info labels
         GridPane infoGrid = new GridPane();
         infoGrid.setHgap(200);
         infoGrid.setVgap(60);
@@ -67,13 +61,11 @@ rightBtn.setPrefSize(55, 55);
 
         setCenter(infoGrid);
 
-        // Checkbox on right
         CheckBox literalBibCheck = new CheckBox("Create Literal Bib");
         BorderPane.setAlignment(literalBibCheck, Pos.BOTTOM_RIGHT);
         BorderPane.setMargin(literalBibCheck, new Insets(5, 15, 10, 0));
         setRight(literalBibCheck);
 
-        // Table
         TableView<String> table = new TableView<>();
         table.setPlaceholder(new Label("No content in table"));
 
@@ -92,8 +84,6 @@ rightBtn.setPrefSize(55, 55);
         table.getColumns().addAll(colBib, colSaved, colSeen, colWrite, colDelete);
         setBottom(table);
     }
-
-    // Tambahkan method supaya bisa dipanggil langsung
     public void showWindow() {
         Stage stage = new Stage();
         stage.setTitle("Write Tag");

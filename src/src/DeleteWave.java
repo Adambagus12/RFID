@@ -38,11 +38,9 @@ public class DeleteWave {
 
         root.getChildren().addAll(lblConfirm, buttons);
 
-        // ✅ Atur ukuran window di sini
         Scene scene = new Scene(root, 400, 120);
         stage.setScene(scene);
 
-        // ✅ Batas minimal & maksimal ukuran window
         stage.setMinWidth(300);
         stage.setMinHeight(120);
         stage.setMaxWidth(600);

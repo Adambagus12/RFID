@@ -15,7 +15,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class CloseEvent {
 
-    // 🔧 Helper untuk ambil nama file tanpa ekstensi apapun
     private String stripExtension(String filename) {
         if (filename == null) return null;
         int dotIndex = filename.indexOf('.');
@@ -107,7 +106,6 @@ public class CloseEvent {
         txtPath.setPromptText("DB Path");
         txtPath.setPrefWidth(400);
 
-        // 🔹 Icon putih untuk tombol Browse Path
         FontIcon pathIcon = new FontIcon("fas-folder-open");
         pathIcon.setIconColor(Color.WHITE);
         Button btnBrowse = new Button("Path", pathIcon);
@@ -128,14 +126,12 @@ public class CloseEvent {
         HBox pathBox = new HBox(5, txtPath, btnBrowse);
         pathBox.setAlignment(Pos.CENTER);
 
-        // 🔹 Save button with white icon
         FontIcon saveIcon = new FontIcon("fas-save");
         saveIcon.setIconColor(Color.WHITE);
         Button btnSave = new Button("Save", saveIcon);
         btnSave.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 14px;");
         btnSave.setPrefWidth(100);
 
-        // 🔹 Cancel button with white icon
         FontIcon cancelIcon = new FontIcon("fas-times");
         cancelIcon.setIconColor(Color.WHITE);
         Button btnCancel = new Button("Cancel", cancelIcon);
@@ -185,7 +181,6 @@ public class CloseEvent {
         txtPath.setPromptText("Pick Your DB File");
         txtPath.setPrefWidth(400);
 
-        // 🔹 Icon putih untuk tombol Pick File
         FontIcon browseIcon = new FontIcon("fas-folder-open");
         browseIcon.setIconColor(Color.WHITE);
         Button btnBrowse = new Button("Pick File", browseIcon);
@@ -207,14 +202,12 @@ public class CloseEvent {
         pathBox.setAlignment(Pos.CENTER);
         pathBox.setMaxWidth(520);
 
-        // 🔹 Load button with white icon
         FontIcon loadIcon = new FontIcon("fas-download");
         loadIcon.setIconColor(Color.WHITE);
         Button btnLoad = new Button("Load", loadIcon);
         btnLoad.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 14px;");
         btnLoad.setPrefWidth(100);
 
-        // 🔹 Cancel button with white icon
         FontIcon cancelIcon = new FontIcon("fas-times");
         cancelIcon.setIconColor(Color.WHITE);
         Button btnCancel = new Button("Cancel", cancelIcon);

@@ -19,17 +19,14 @@ public class TagCheck extends BorderPane {
     private Stage dialogStage;
 
     public TagCheck(Stage owner) {
-        // === Konstanta global untuk alignment ===
-        final double LABEL_W   = 90;   // lebar label sama semua
-        final double INPUT_LEFT = 10;  // margin kiri input lebih dekat ke label
+        final double LABEL_W   = 90;   
+        final double INPUT_LEFT = 10;  
 
-        // VBox utama di tengah
-        VBox vbox = new VBox(10); // spacing antar baris
+        VBox vbox = new VBox(10); 
         vbox.setAlignment(Pos.CENTER);
         vbox.setPrefHeight(200.0);
         vbox.setPrefWidth(100.0);
 
-        // ================== HBox 1: HTML File ==================
         HBox hbox1 = new HBox();
         hbox1.setAlignment(Pos.CENTER_LEFT);
         hbox1.setPrefWidth(500.0);
@@ -47,7 +44,6 @@ public class TagCheck extends BorderPane {
 
         hbox1.getChildren().addAll(lblHtml, tfHtml, btnPickFile);
 
-        // ================== HBox 2: Reader ==================
         HBox hbox2 = new HBox();
         hbox2.setAlignment(Pos.CENTER_LEFT);
         hbox2.setPrefWidth(500.0);
@@ -63,7 +59,6 @@ public class TagCheck extends BorderPane {
 
         hbox2.getChildren().addAll(lblReader, cbReader);
 
-        // ================== HBox 3: Antenna ==================
         HBox hbox3 = new HBox();
         hbox3.setAlignment(Pos.CENTER_LEFT);
         hbox3.setPrefWidth(500.0);
@@ -74,14 +69,13 @@ public class TagCheck extends BorderPane {
 
         TextField tfAntenna = new TextField();
         tfAntenna.setPrefHeight(127.0);
-        tfAntenna.setPrefWidth(373.0); // samakan dengan yg atas
+        tfAntenna.setPrefWidth(373.0);
         HBox.setMargin(tfAntenna, new Insets(0, 0, 0, INPUT_LEFT));
 
         hbox3.getChildren().addAll(lblAntenna, tfAntenna);
 
-        // ================== HBox 4: Buttons ==================
-        HBox hbox4 = new HBox(10); // spacing antar tombol
-        hbox4.setAlignment(Pos.CENTER_RIGHT); // semua tombol di kanan
+        HBox hbox4 = new HBox(10); 
+        hbox4.setAlignment(Pos.CENTER_RIGHT); 
         hbox4.setPrefWidth(500.0);
         hbox4.setPadding(new Insets(0, 35, 0, 10));
 
@@ -91,16 +85,10 @@ public class TagCheck extends BorderPane {
         Button btnCancel = new Button("Cancel");
         btnCancel.setGraphic(new FontIcon("fas-times"));
 
-        // urutannya: Open lalu Cancel
         hbox4.getChildren().addAll(btnOpen, btnCancel);
 
-        // ================== Tambahkan ke VBox ==================
         vbox.getChildren().addAll(hbox1, hbox2, hbox3, hbox4);
-
-        // Taruh VBox ke center BorderPane
         this.setCenter(vbox);
-
-        // === Buat Stage popup ===
         dialogStage = new Stage();
         dialogStage.initOwner(owner);
         dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -108,12 +96,9 @@ public class TagCheck extends BorderPane {
 
         Scene scene = new Scene(this, 520, 300);
         dialogStage.setScene(scene);
-
-        // Tutup popup kalau klik Cancel
         btnCancel.setOnAction(e -> dialogStage.close());
     }
 
-    // method untuk munculin popup
     public void showDialog() {
         dialogStage.showAndWait();
     }
