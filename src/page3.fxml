@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox prefHeight="1080.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="325.0" prefWidth="1920.0">
+               <children>
+                  <VBox prefHeight="325.0" prefWidth="400.0">
+                     <children>
+                        <Label text="Bib #">
+                           <font>
+                              <Font name="Arial Bold" size="25.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" promptText="BIB Number">
+                           <font>
+                              <Font name="Arial" size="35.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="190.0">
+                                 <children>
+                                    <Label text="Tags / Second:">
+                                       <font>
+                                          <Font name="Arial" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Tag Read:">
+                                       <font>
+                                          <Font name="Arial" size="25.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="190.0">
+                                 <children>
+                                    <Label text="0">
+                                       <font>
+                                          <Font name="Arial" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="0">
+                                       <font>
+                                          <Font name="Arial" size="25.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="325.0" prefWidth="700.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="130.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" style="-fx-background-color: green;" text="Start" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="30.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="30.0" left="90.0" right="90.0" top="30.0" />
+                                 </padding>
+                              </Button>
+                              <Button layoutX="300.0" layoutY="47.0" mnemonicParsing="false" style="-fx-background-color: green;" text="Upload" textAlignment="JUSTIFY" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="30.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="30.0" left="140.0" right="140.0" top="30.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="194.0" prefWidth="689.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="650.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="144.0" layoutX="10.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="650.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <TableView prefHeight="325.0" prefWidth="410.0">
+                    <columns>
+                      <TableColumn prefWidth="41.0" text="#" />
+                      <TableColumn prefWidth="171.0" text="Name" />
+                        <TableColumn prefWidth="77.0" text="Model" />
+                        <TableColumn prefWidth="120.0" text="Connected?" />
+                    </columns>
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <TableView layoutX="1110.0" layoutY="10.0" prefHeight="325.0" prefWidth="410.0">
+                     <columns>
+                        <TableColumn prefWidth="23.0" text="#" />
+                        <TableColumn prefWidth="106.0" text="Unique Tag" />
+                        <TableColumn prefWidth="85.0" text="Total Reads" />
+                        <TableColumn prefWidth="64.0" text="Peak" />
+                        <TableColumn minWidth="0.0" prefWidth="50.0" text="Con" />
+                        <TableColumn prefWidth="73.0" text="Power" />
+                     </columns>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <SplitPane dividerPositions="0.2116788321167883" prefHeight="756.0" prefWidth="1920.0">
+              <items>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ScrollBar layoutX="386.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="738.0" prefWidth="10.0" visibleAmount="90.0" />
+                     </children>
+                  </Pane>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <VBox prefHeight="744.0" prefWidth="1509.0" BorderPane.alignment="CENTER_LEFT">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="1509.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="842.0">
+                                       <children>
+                                          <Label>
+                                             <font>
+                                                <Font name="Arial Black" size="15.0" />
+                                             </font>
+                                             <graphic>
+                                                <FontIcon iconLiteral="fas-filter" selectionEnd="0" />
+                                             </graphic>
+                                          </Label>
+                                          <TextField prefHeight="35.0" prefWidth="160.0">
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <ChoiceBox prefHeight="35.0" prefWidth="150.0">
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin>
+                                          </ChoiceBox>
+                                          <ChoiceBox prefHeight="35.0" prefWidth="150.0">
+                                             <HBox.margin>
+                                                <Insets left="15.0" />
+                                             </HBox.margin>
+                                          </ChoiceBox>
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="842.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Refresh">
+                                             <font>
+                                                <Font name="Arial" size="20.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets right="15.0" />
+                                             </HBox.margin>
+                                          </Button>
+                                          <Button layoutX="718.0" layoutY="24.0" mnemonicParsing="false" style="-fx-background-color: red;" text="II" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Black" size="15.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                       <padding>
+                                          <Insets right="15.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                              <TableView prefHeight="686.0" prefWidth="1509.0">
+                                <columns>
+                                  <TableColumn prefWidth="101.0" text="BIB" />
+                                  <TableColumn minWidth="5.666656494140625" prefWidth="105.33331298828125" text="Read" />
+                                    <TableColumn minWidth="7.0" prefWidth="319.0" text="Name" />
+                                    <TableColumn prefWidth="348.0" text="Category" />
+                                    <TableColumn minWidth="0.0" prefWidth="133.0">
+                                       <graphic>
+                                          <MenuButton mnemonicParsing="false" prefHeight="25.0" prefWidth="191.0" text="Time">
+                                            <items>
+                                              <MenuItem mnemonicParsing="false" text="Action 1" />
+                                              <MenuItem mnemonicParsing="false" text="Action 2" />
+                                            </items>
+                                          </MenuButton>
+                                       </graphic>
+                                    </TableColumn>
+                                    <TableColumn minWidth="0.0" prefWidth="174.0" text="Split" />
+                                    <TableColumn prefWidth="163.0" text="Locked" />
+                                    <TableColumn minWidth="0.0" prefWidth="159.333251953125" text="Upload" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </top>
+                     <bottom>
+                        <Pagination maxPageIndicatorCount="1" prefHeight="0.0" prefWidth="1509.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                  </BorderPane>
+              </items>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </SplitPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
