@@ -7,12 +7,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.*;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class CloseEvent {
+
+    // 🔧 Helper untuk ambil nama file tanpa ekstensi apapun
+    private String stripExtension(String filename) {
+        if (filename == null) return null;
+        int dotIndex = filename.indexOf('.');
+        return (dotIndex > 0) ? filename.substring(0, dotIndex) : filename;
+    }
 
     public Parent getView() {
         BorderPane root = new BorderPane();
@@ -78,7 +86,6 @@ public class CloseEvent {
         return root;
     }
 
-    
     public void showAddEventDialog(Window owner) {
         Stage dialog = new Stage();
         dialog.initOwner(owner);
@@ -93,15 +100,19 @@ public class CloseEvent {
         title.setFont(Font.font("Arial", FontWeight.BOLD, 22));
 
         TextField txtEventName = new TextField();
-        txtEventName.setPromptText("Enter Event Name");
-        txtEventName.setPrefWidth(350);
+        txtEventName.setPromptText("Event Name");
+        txtEventName.setPrefWidth(400);
 
         TextField txtPath = new TextField();
         txtPath.setPromptText("DB Path");
-        txtPath.setPrefWidth(250);
+        txtPath.setPrefWidth(400);
 
-        Button btnBrowse = new Button("Path");
+        // 🔹 Icon putih untuk tombol Browse Path
+        FontIcon pathIcon = new FontIcon("fas-folder-open");
+        pathIcon.setIconColor(Color.WHITE);
+        Button btnBrowse = new Button("Path", pathIcon);
         btnBrowse.setPrefWidth(80);
+        btnBrowse.setStyle("-fx-background-color: #0078D7; -fx-text-fill: white;");
         btnBrowse.setOnAction(e -> {
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Select Database Location");
@@ -117,11 +128,17 @@ public class CloseEvent {
         HBox pathBox = new HBox(5, txtPath, btnBrowse);
         pathBox.setAlignment(Pos.CENTER);
 
-        Button btnSave = new Button("Save");
+        // 🔹 Save button with white icon
+        FontIcon saveIcon = new FontIcon("fas-save");
+        saveIcon.setIconColor(Color.WHITE);
+        Button btnSave = new Button("Save", saveIcon);
         btnSave.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 14px;");
         btnSave.setPrefWidth(100);
 
-        Button btnCancel = new Button("Cancel");
+        // 🔹 Cancel button with white icon
+        FontIcon cancelIcon = new FontIcon("fas-times");
+        cancelIcon.setIconColor(Color.WHITE);
+        Button btnCancel = new Button("Cancel", cancelIcon);
         btnCancel.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 14px;");
         btnCancel.setPrefWidth(100);
 
@@ -129,8 +146,8 @@ public class CloseEvent {
             String eventName = txtEventName.getText().trim();
             String path = txtPath.getText().trim();
             if (!eventName.isEmpty() && !path.isEmpty()) {
-                File file = new File(path);
-                Navigator.setActiveEventName(eventName);
+                String cleanName = stripExtension(eventName);
+                Navigator.setActiveEventName(cleanName);
                 Navigator.setEventActive(true);
                 dialog.close();
                 Navigator.navigate("Home");
@@ -166,10 +183,14 @@ public class CloseEvent {
 
         TextField txtPath = new TextField();
         txtPath.setPromptText("Pick Your DB File");
-        txtPath.setPrefWidth(300);
+        txtPath.setPrefWidth(400);
 
-        Button btnBrowse = new Button("Pick File");
+        // 🔹 Icon putih untuk tombol Pick File
+        FontIcon browseIcon = new FontIcon("fas-folder-open");
+        browseIcon.setIconColor(Color.WHITE);
+        Button btnBrowse = new Button("Pick File", browseIcon);
         btnBrowse.setPrefWidth(100);
+        btnBrowse.setStyle("-fx-background-color: #0078D7; -fx-text-fill: white;");
         btnBrowse.setOnAction(e -> {
             FileChooser chooser = new FileChooser();
             chooser.setTitle("Select DB File");
@@ -184,12 +205,19 @@ public class CloseEvent {
 
         HBox pathBox = new HBox(5, txtPath, btnBrowse);
         pathBox.setAlignment(Pos.CENTER);
+        pathBox.setMaxWidth(520);
 
-        Button btnLoad = new Button("Load");
+        // 🔹 Load button with white icon
+        FontIcon loadIcon = new FontIcon("fas-download");
+        loadIcon.setIconColor(Color.WHITE);
+        Button btnLoad = new Button("Load", loadIcon);
         btnLoad.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 14px;");
         btnLoad.setPrefWidth(100);
 
-        Button btnCancel = new Button("Cancel");
+        // 🔹 Cancel button with white icon
+        FontIcon cancelIcon = new FontIcon("fas-times");
+        cancelIcon.setIconColor(Color.WHITE);
+        Button btnCancel = new Button("Cancel", cancelIcon);
         btnCancel.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 14px;");
         btnCancel.setPrefWidth(100);
 
@@ -197,7 +225,9 @@ public class CloseEvent {
             String path = txtPath.getText().trim();
             if (!path.isEmpty()) {
                 File file = new File(path);
-                Navigator.setActiveEventName(file.getName());
+                String fileName = stripExtension(file.getName());
+
+                Navigator.setActiveEventName(fileName);
                 Navigator.setEventActive(true);
                 dialog.close();
                 Navigator.navigate("Home");

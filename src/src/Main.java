@@ -18,8 +18,11 @@ public class Main extends Application {
     public void start(Stage stage) {
         HBox rootRow = new HBox();
         rootRow.setFillHeight(true);
+
         VBox sidebarHost = new VBox();
         sidebarHost.setPrefWidth(80);
+        sidebarHost.setMinWidth(80);   // ✅ kunci supaya tidak mengecil
+        sidebarHost.setMaxWidth(80);   // ✅ kunci supaya tidak membesar
         HBox.setHgrow(sidebarHost, Priority.NEVER);
 
         mainPane = new BorderPane();

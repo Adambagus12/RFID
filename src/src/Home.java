@@ -36,6 +36,7 @@ public class Home {
 
         Text subtitle = new Text();
         subtitle.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+        VBox.setMargin(subtitle, new Insets(0, 0, 0, 10)); // ✅ tambahan agar sejajar dengan Welcome
 
         subtitle.textProperty().bind(
             Bindings.when(Navigator.eventActiveProperty())
@@ -91,7 +92,7 @@ public class Home {
 
             StackPane stack = new StackPane(whiteBox);
             StackPane.setAlignment(closeEventBtn, Pos.TOP_RIGHT);
-            StackPane.setMargin(closeEventBtn, new Insets(-20, 5, 0, 2)); // 
+            StackPane.setMargin(closeEventBtn, new Insets(-20, 5, 0, 2));
             stack.getChildren().add(closeEventBtn);
 
             VBox wrapper = new VBox(stack);

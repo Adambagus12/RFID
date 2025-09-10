@@ -12,12 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class Navigator {
     private static BorderPane mainPane;
 
-    // 🔹 Properti untuk event aktif
+    // 🔹 Properti event aktif
     private static final BooleanProperty eventActive = new SimpleBooleanProperty(false);
 
     // 🔹 Nama event aktif
@@ -26,7 +27,7 @@ public class Navigator {
     // 🔹 Halaman aktif
     private static final StringProperty activePage = new SimpleStringProperty("Welcome");
 
-    // 🔹 Supplier untuk halaman Home
+    // 🔹 Supplier halaman Home
     private static Supplier<Parent> homeSupplier;
 
     public static void init(BorderPane pane) {
@@ -41,7 +42,6 @@ public class Navigator {
     public static void navigateTo(String page) {
         if (mainPane == null) return;
 
-        // ✅ update halaman aktif
         setActivePage(page);
 
         switch (page) {
@@ -86,15 +86,26 @@ public class Navigator {
                 new CloseEvent().showLoadEventDialog(owner);
             }
             case "CloseEvent" -> mainPane.setCenter(new CloseEvent().getView());
+
+            // 🔹 Halaman tambahan: Tag Check (popup window)
+            case "Tag Check" -> {
+                Window owner = getOwnerWindow();
+                if (owner instanceof Stage stage) {
+                    TagCheck dialog = new TagCheck(stage);
+                    dialog.showDialog();
+                }
+            }
         }
     }
 
-    // 🔹 Alias biar cocok dengan Main / Sidebar
+    // 🔹 Alias navigasi
     public static void navigate(String page) {
         navigateTo(page);
     }
 
-    // 🔹 Event aktif / tidak
+    // ================== Getter & Setter ==================
+
+    // Event aktif
     public static BooleanProperty eventActiveProperty() {
         return eventActive;
     }
@@ -107,7 +118,7 @@ public class Navigator {
         eventActive.set(active);
     }
 
-    // 🔹 Nama event aktif
+    // Nama event aktif
     public static StringProperty activeEventNameProperty() {
         return activeEventName;
     }
@@ -120,7 +131,7 @@ public class Navigator {
         activeEventName.set(name);
     }
 
-    // 🔹 Halaman aktif
+    // Halaman aktif
     public static StringProperty activePageProperty() {
         return activePage;
     }
@@ -133,8 +144,10 @@ public class Navigator {
         activePage.set(page);
     }
 
-    // 🔹 Ambil window utama dengan aman
+    // Ambil window utama dengan aman
     private static Window getOwnerWindow() {
-        return (mainPane != null && mainPane.getScene() != null) ? mainPane.getScene().getWindow() : null;
+        return (mainPane != null && mainPane.getScene() != null)
+                ? mainPane.getScene().getWindow()
+                : null;
     }
 }
